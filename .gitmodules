@@ -1,0 +1,6 @@
+[submodule "retroclash-lib"]
+	path = retroclash-lib
+	url = git@github.com:gergoerdi/retroclash-lib.git
+[submodule "clash-shake"]
+	path = clash-shake
+	url = git@github.com:gergoerdi/clash-shake.git

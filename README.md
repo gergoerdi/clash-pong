@@ -1,10 +1,10 @@
-% Pong
+# Pong
 
 This repository implements Pong in Haskell, both as a software program
 (using SDL for input and graphics) and as a hardware FPGA design via
 Clash.
 
-# Building
+## Building
 
 Use `stack build` to build and `stack run pong` to run the software
 version.
@@ -23,7 +23,7 @@ of `VIVADO_ROOT`:
     TARGET = nexys-a7-50t
     VIVADO = /usr/local/lib/docker-scripts/xilinx-2019.1-ubuntu-18.04/run
 
-# Supported target boards
+## Supported target boards
 
 Currently, the only supported target is the Nexys A7-50T, a Xilinx
 7-series FPGA based dev board. Adding support to other Vivado or ISE

@@ -70,42 +70,46 @@ data InputState = MkInputState
     , paddleDown :: Bool
     }
 
-data Endpoint = Lo | Hi deriving (Eq, Show)
+double :: (Num a) => a -> a
+double x = x + x
 
-bounce :: (Num a, Ord a) => (a, a) -> Lens' s a -> Lens' s a -> State s (Maybe Endpoint)
-bounce (lo, hi) x vx = do
-    vx0 <- use vx
+reflect :: (Num a, Num a', Ord a, Ord a') => Lens' s a -> Lens' s a' -> (a, a') -> State s Bool
+reflect x x' (p, n) = do
     x0 <- use x
-    let new = x0 + vx0
-        under = lo - new
-        over = new - hi
-    x .= new
-    if under > 0 then do
-        x .= lo + under
-        vx %= negate
-        return $ Just Lo
-      else if over > 0 then do
-        x .= hi - over
-        vx %= negate
-        return $ Just Hi
-      else
-        return Nothing
+    let over = dir $ p - x0
+    if over > 0 then do
+        x += dir (double over)
+        x' %= negate
+        return True
+      else return False
+  where
+    dir = if n > 0 then id else negate
+
+move :: (Num a) => Lens' s a -> Lens' s a -> State s ()
+move x dx = do
+    dx <- use dx
+    x += dx
 
 x `between` (lo, hi) = lo <= x && x <= hi
 
 updateHoriz :: Params -> InputState -> State St ()
 updateHoriz MkParams{..} MkInputState{..} = do
+    move ballX ballSpeedX
+    reflect ballX ballSpeedX (wallSize, 1)
     atPaddle <- gets $ \st@MkSt{..} -> _ballY `between` (_paddleY, _paddleY + paddleSize)
-    let right = if atPaddle then screenWidth - paddleWidth else maxBound
-    collision <- bounce (wallSize, right) ballX ballSpeedX
-    when (collision == Just Hi) $ ballSpeedY += nudge
+    when atPaddle $ do
+        hitPaddle <- reflect ballX ballSpeedX (screenWidth - paddleWidth - ballSize, -1)
+        when hitPaddle $ ballSpeedY += nudge
   where
     nudge | paddleDown = 5
           | paddleUp = -5
           | otherwise = 0
 
 updateVert :: Params -> State St ()
-updateVert MkParams{..} = void $ bounce (wallSize, screenHeight - wallSize) ballY ballSpeedY
+updateVert MkParams{..} = void $ do
+    move ballY ballSpeedY
+    reflect ballY ballSpeedY (wallSize, 1)
+    reflect ballY ballSpeedY (screenHeight - wallSize - ballSize, -1)
 
 updatePaddle :: Params -> InputState -> State St ()
 updatePaddle MkParams{..} MkInputState{..} = do

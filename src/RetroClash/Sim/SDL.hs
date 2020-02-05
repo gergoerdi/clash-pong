@@ -1,5 +1,10 @@
 {-# LANGUAGE RecordWildCards, ScopedTypeVariables, TypeApplications #-}
-module RetroClash.Sim.SDL.PatternGenerator (withMainWindow) where
+module RetroClash.Sim.SDL
+    ( withMainWindow
+    , Rasterizer
+
+    , rasterizePattern
+    ) where
 
 import Prelude
 import Clash.Prelude hiding (lift)
@@ -20,8 +25,10 @@ type Draw w h = (Index w, Index h) -> Color
 screenRefreshRate :: Word32
 screenRefreshRate = 60
 
-scanRaster :: (KnownNat w, KnownNat h) => Ptr Word8 -> CInt -> Draw w h -> IO ()
-scanRaster ptr stride draw = do
+newtype Rasterizer (w :: Nat) (h :: Nat) = Rasterizer{ runRasterizer :: Ptr Word8 -> CInt -> IO () }
+
+rasterizePattern :: (KnownNat w, KnownNat h) => Draw w h -> Rasterizer w h
+rasterizePattern draw = Rasterizer $ \ptr stride -> do
     forM_ [minBound..maxBound] $ \y -> do
         let base = fromIntegral y * fromIntegral stride
         forM_ [minBound .. maxBound] $ \x -> do
@@ -37,7 +44,7 @@ withMainWindow
     => Text
     -> CInt
     -> s
-    -> ([Event] -> (Scancode -> Bool) -> s -> IO (Maybe (Draw w h, s)))
+    -> ([Event] -> (Scancode -> Bool) -> s -> IO (Maybe (Rasterizer w h, s)))
     -> IO ()
 withMainWindow title screenScale s0 runFrame = do
     initializeAll
@@ -46,10 +53,10 @@ withMainWindow title screenScale s0 runFrame = do
 
     renderer <- createRenderer window (-1) defaultRenderer
     texture <- createTexture renderer RGBA8888 TextureAccessStreaming screenSize
-    let render draw = do
+    let render rasterizer = do
             (ptr, stride) <- lockTexture texture Nothing
             let ptr' = castPtr ptr
-            scanRaster ptr' stride draw
+            runRasterizer rasterizer ptr' stride
             unlockTexture texture
             SDL.copy renderer texture Nothing Nothing
             present renderer

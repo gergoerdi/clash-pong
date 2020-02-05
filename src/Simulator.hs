@@ -5,7 +5,7 @@ import Prelude
 
 import Pong.Game
 import Pong.Video
-import RetroClash.Sim.SDL.PatternGenerator
+import RetroClash.Sim.SDL
 
 import SDL hiding (get)
 import Control.Monad.State
@@ -16,4 +16,4 @@ main = withMainWindow "Pong" 2 initState $ \events keyState s -> fmap Just $ fli
         { paddleUp = keyState ScancodeUp
         , paddleDown = keyState ScancodeDown
         }
-    gets $ draw defaultParams
+    gets $ rasterizePattern . draw defaultParams

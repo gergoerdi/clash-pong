@@ -35,7 +35,7 @@ main = clashShake clashProject $ do
     ClashProject{..} <- ask
     let synDir = buildDir </> clashDir
 
-    kit@ClashKit{..} <- clashRules Verilog "src-clash" $ return ()
+    kit@ClashKit{..} <- clashRules Verilog "src" $ return ()
     -- xilinxISE kit papilioPro "target/papilio-pro" "papilio-pro"
     -- xilinxISE kit papilioOne "target/papilio-one" "papilio-one"
     xilinxVivado kit nexysA750T "target/nexys-a7-50t" "nexys-a7-50t"

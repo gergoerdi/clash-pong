@@ -24,10 +24,9 @@ default-extensions:
   - DeriveAnyClass
 
 source-dirs:
-  - src-clash
-  - src-sim
+  - src
   
 executables:
   pong:
-    main: Main.hs
+    main: Simulator.hs
     

@@ -9,6 +9,7 @@ import RetroClash.Clock
 import Data.Maybe
 
 import Pong.Game
+import Pong.Video
 
 -- | 25 MHz clock, needed for the VGA mode we use.
 createDomain vSystem{vName="Dom25", vPeriod = hzToPeriod 25_175_000}

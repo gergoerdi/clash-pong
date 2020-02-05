@@ -1,29 +1,26 @@
-{-# LANGUAGE RecordWildCards #-}
-module Pong.SDL (withMainWindow) where
+{-# LANGUAGE RecordWildCards, ScopedTypeVariables, TypeApplications #-}
+module RetroClash.Sim.SDL.PatternGenerator (withMainWindow) where
 
 import Prelude
 import Clash.Prelude hiding (lift)
 import RetroClash.Utils
-
-import Pong.Game
 
 import SDL hiding (get)
 import Foreign.C.Types
 import Foreign.Ptr
 import Foreign.Storable
 import Data.Word
-import Control.Monad.Trans (MonadIO, liftIO)
 import Control.Concurrent (threadDelay)
 import Data.Text (Text)
 import Control.Monad
 
-screenScale :: CInt
-screenScale = 2
+type Color = (Word8, Word8, Word8)
+type Draw w h = (Index w, Index h) -> Color
 
 screenRefreshRate :: Word32
 screenRefreshRate = 60
 
-scanRaster :: Ptr Word8 -> CInt -> Draw 640 480 -> IO ()
+scanRaster :: (KnownNat w, KnownNat h) => Ptr Word8 -> CInt -> Draw w h -> IO ()
 scanRaster ptr stride draw = do
     forM_ [minBound..maxBound] $ \y -> do
         let base = fromIntegral y * fromIntegral stride
@@ -35,11 +32,16 @@ scanRaster ptr stride draw = do
             pokeElemOff ptr (offset + 2) g
             pokeElemOff ptr (offset + 3) r
 
-withMainWindow :: Text -> s -> ([Event] -> (Scancode -> Bool) -> s -> IO (Maybe (Draw 640 480, s))) -> IO ()
-withMainWindow title s0 runFrame = do
+withMainWindow
+    :: forall w h s. (KnownNat w, KnownNat h)
+    => Text
+    -> CInt
+    -> s
+    -> ([Event] -> (Scancode -> Bool) -> s -> IO (Maybe (Draw w h, s)))
+    -> IO ()
+withMainWindow title screenScale s0 runFrame = do
     initializeAll
     window <- createWindow title defaultWindow
-    let screenSize = fromIntegral <$> V2 screenWidth screenHeight
     windowSize window $= fmap (screenScale *) screenSize
 
     renderer <- createRenderer window (-1) defaultRenderer
@@ -69,6 +71,7 @@ withMainWindow title s0 runFrame = do
     destroyWindow window
   where
     frameTime = 1000 `div` screenRefreshRate
+    screenSize = V2 (snatToNum (SNat @w)) (snatToNum (SNat @h))
 
     isQuitEvent ev = case eventPayload ev of
         WindowClosedEvent{} -> True

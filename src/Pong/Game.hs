@@ -1,6 +1,4 @@
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE RecordWildCards #-}
-{-# LANGUAGE TemplateHaskell, RankNTypes #-}
+{-# LANGUAGE RecordWildCards, TemplateHaskell, RankNTypes, TypeApplications #-}
 module Pong.Game
     ( Params(..)
     , defaultParams
@@ -9,12 +7,11 @@ module Pong.Game
     , St(..)
     , initState
     , updateState
-    , draw
 
-    , Color
-    , Draw
-    , screenWidth
-    , screenHeight
+    , ScreenWidth
+    , ScreenHeight
+
+    , between
     ) where
 
 import Prelude
@@ -25,21 +22,14 @@ import Data.Word
 import Control.Monad.State
 import Control.Lens hiding (Index)
 
+type ScreenWidth = 640
+type ScreenHeight = 480
+
 screenWidth :: Int
-screenWidth = 640
+screenWidth = snatToNum (SNat @ScreenWidth)
 
 screenHeight :: Int
-screenHeight = 480
-
-type Color = (Word8, Word8, Word8)
-
-black :: Color
-black = (0x00, 0x00, 0x00)
-
-white :: Color
-white = (0xff, 0xff, 0xff)
-
-type Draw w h = (Index w, Index h) -> Color
+screenHeight = snatToNum (SNat @ScreenHeight)
 
 data St = MkSt
     { _ballX, _ballY :: Int
@@ -130,30 +120,6 @@ updateState params inp@MkInputState{..} = execState $ do
     when outOfBounds $ do
         gameOver .= True
         ballX .= screenWidth `shiftR` 1
-
-draw :: Params -> St -> Draw 640 480
-draw MkParams{..} MkSt{..} (x0, y0)
-    | isWall = wallColor
-    | isPaddle = paddleColor
-    | isBall = ballColor
-    | otherwise = backColor
-  where
-    x = fromIntegral x0
-    y = fromIntegral y0
-
-    isWall = x < wallSize || y < wallSize || y > (screenHeight - wallSize)
-
-    paddleStart = screenWidth - paddleWidth
-
-    rect (x0, y0) (w, h) x y = x `between` (x0, x0 + w) && y `between` (y0, y0 + h)
-
-    isPaddle = rect (paddleStart, _paddleY) (paddleWidth, paddleSize) x y
-    isBall = rect (_ballX, _ballY) (ballSize, ballSize) x y
-
-    paddleColor = (0x40, 0x80, 0xf0)
-    ballColor = (0xf0, 0xe0, 0x40)
-    wallColor = white
-    backColor = if _gameOver then (0x80, 0x00, 0x00) else (0x30, 0x30, 0x30)
 
 defaultParams :: Params
 defaultParams = MkParams

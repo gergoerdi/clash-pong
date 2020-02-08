@@ -1,10 +1,11 @@
-{-# LANGUAGE NumericUnderscores, RecordWildCards #-}
+{-# LANGUAGE NumericUnderscores, RecordWildCards, TypeApplications #-}
 {-# LANGUAGE ApplicativeDo, ViewPatterns, TupleSections #-}
 module Pong where
 
 import Clash.Prelude
 import RetroClash.Utils
 import RetroClash.VGA
+import RetroClash.Video
 import RetroClash.Clock
 import Data.Maybe
 
@@ -46,6 +47,9 @@ topEntity = withEnableGen board
 
         st = regEn initState frameEnd $ (updateState <$> params <*> inputs <*> st)
 
-        rgb = bitCoerce <$> (draw <$> params <*> st <*> xy)
-          where
-            xy = fromMaybe (0, 0) <$> (liftA2 (,) <$> vgaX <*> vgaY)
+        rgb = fmap (maybe (0, 0, 0) bitCoerce) $ do
+            x <- scale (SNat @2) . center @(2 * ScreenWidth) $ vgaX
+            y <- scale (SNat @2) . center @(2 * ScreenHeight) $ vgaY
+            params <- params
+            st <- st
+            pure $ draw params st <$> ((,) <$> x <*> y)

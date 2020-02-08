@@ -22,6 +22,8 @@ default-extensions:
   - TemplateHaskell
   - DeriveGeneric
   - DeriveAnyClass
+  - NoStarIsType
+  - TypeOperators
 
 source-dirs:
   - src

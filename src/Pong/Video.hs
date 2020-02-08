@@ -49,7 +49,7 @@ draw MkParams{..} MkSt{..} (x0, y0)
     x = fromIntegral x0
     y = fromIntegral y0
 
-    isWall = x < wallSize || y < wallSize || y > (snatToNum (SNat @ScreenHeight) - wallSize)
+    isWall = x < wallSize || y < wallSize || y >= (snatToNum (SNat @ScreenHeight) - wallSize)
 
     paddleStart = snatToNum (SNat @ScreenWidth) - paddleWidth
 

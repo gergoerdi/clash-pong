@@ -11,7 +11,7 @@ import SDL hiding (get)
 import Control.Monad.State
 
 main :: IO ()
-main = withMainWindow "Pong" 2 initState $ \events keyState s -> fmap Just $ flip runStateT s $ do
+main = withMainWindow "Pong" 4 initState $ \events keyState s -> fmap Just $ flip runStateT s $ do
     modify $ updateState defaultParams $ MkInputState
         { paddleUp = keyState ScancodeUp
         , paddleDown = keyState ScancodeDown

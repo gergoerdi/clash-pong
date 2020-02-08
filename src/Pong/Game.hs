@@ -22,8 +22,8 @@ import Data.Word
 import Control.Monad.State
 import Control.Lens hiding (Index)
 
-type ScreenWidth = 640
-type ScreenHeight = 480
+type ScreenWidth = 256
+type ScreenHeight = 200
 
 screenWidth :: Int
 screenWidth = snatToNum (SNat @ScreenWidth)
@@ -44,15 +44,15 @@ initState :: St
 initState = MkSt
     { _ballX = 10
     , _ballY = 100
-    , _ballSpeedX = 5
-    , _ballSpeedY = -7
+    , _ballSpeedX = 2
+    , _ballSpeedY = 3
     , _paddleY = 100
     , _gameOver = False
     }
 
 data Params = MkParams
     { wallSize, ballSize, paddleSize :: Int
-    , paddleWidth, paddleSpeed :: Int
+    , paddleWidth, paddleSpeed, nudgeSpeed :: Int
     }
 
 data InputState = MkInputState
@@ -91,8 +91,8 @@ updateHoriz MkParams{..} MkInputState{..} = do
         hitPaddle <- reflect ballX ballSpeedX (screenWidth - paddleWidth - ballSize, -1)
         when hitPaddle $ ballSpeedY += nudge
   where
-    nudge | paddleDown = 5
-          | paddleUp = -5
+    nudge | paddleDown = nudgeSpeed
+          | paddleUp = negate nudgeSpeed
           | otherwise = 0
 
 updateVert :: Params -> State St ()
@@ -123,9 +123,10 @@ updateState params inp@MkInputState{..} = execState $ do
 
 defaultParams :: Params
 defaultParams = MkParams
-    { wallSize = 5
-    , ballSize = 10
-    , paddleSize = 150
-    , paddleWidth = 15
-    , paddleSpeed = 5
+    { wallSize = 2
+    , ballSize = 5
+    , paddleSize = 50
+    , paddleWidth = 5
+    , paddleSpeed = 3
+    , nudgeSpeed = 3
     }

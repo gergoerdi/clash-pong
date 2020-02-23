@@ -16,6 +16,9 @@ dependencies:
   - mtl
   - sdl2
   - text
+  - clock
+  - array
+  - monad-loops
 
 default-extensions:
   - DataKinds
@@ -29,8 +32,19 @@ default-extensions:
 
 source-dirs:
   - src
-  
+
 executables:
   pong:
-    main: Simulator.hs
+    main: simulator.hs
+
+  pong-verilator:
+    main: verilator.hs
+    source-dirs:
+      - src
+      - verilator
+    extra-libraries: stdc++ 
+    extra-lib-dirs: verilator
+    ghc-options: -O3 -fPIC -pgml g++ -optl-Wl,--allow-multiple-definition -optl-Wl,--whole-archive -optl-Wl,-Bstatic -optl-Wl,-L_build/verilator -optl-Wl,-lVerilatorFFI -optl-Wl,-Bdynamic -optl-Wl,--no-whole-archive
     
+    build-tools: hsc2hs
+    include-dirs: verilator

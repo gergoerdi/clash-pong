@@ -7,9 +7,11 @@ dependencies:
   - clash-prelude
   - clash-lib
   - clash-ghc
+  - retroclash-lib
+  - retroclash-sim
+
   - shake == 0.17.9
   - mustache == 2.3.1
-  - retroclash-lib
   - lens
   - mtl
   - sdl2

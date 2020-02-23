@@ -4,3 +4,6 @@
 [submodule "clash-shake"]
 	path = clash-shake
 	url = git@github.com:gergoerdi/clash-shake.git
+[submodule "retroclash-sim"]
+	path = retroclash-sim
+	url = git@github.com:gergoerdi/retroclash-sim.git

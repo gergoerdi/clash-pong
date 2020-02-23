@@ -11,9 +11,9 @@ import SDL hiding (get)
 import Control.Monad.State
 
 main :: IO ()
-main = withMainWindow "Pong" 4 initState $ \events keyState s -> fmap Just $ flip runStateT s $ do
+main = flip evalStateT initState $ withMainWindow "Pong" 4 $ \events keyState -> do
     modify $ updateState defaultParams $ MkInputState
         { paddleUp = keyState ScancodeUp
         , paddleDown = keyState ScancodeDown
         }
-    gets $ rasterizePattern . draw defaultParams
+    gets $ Just . rasterizePattern . draw defaultParams

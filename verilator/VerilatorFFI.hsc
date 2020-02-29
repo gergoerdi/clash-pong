@@ -29,11 +29,13 @@ instance Storable Bit where
 instance Storable INPUT where
     alignment _ = #alignment INPUT
     sizeOf _ = #size INPUT
+    {-# INLINE peek #-}
     peek ptr    = INPUT
         <$> (#peek INPUT, RESET) ptr
         <*> (#peek INPUT, SWITCHES) ptr
         <*> (#peek INPUT, BTN_UP) ptr
         <*> (#peek INPUT, BTN_DOWN) ptr
+    {-# INLINE poke #-}
     poke ptr INPUT{..} = do
         (#poke INPUT, RESET) ptr reset
         (#poke INPUT, SWITCHES) ptr switches
@@ -51,6 +53,7 @@ instance Storable OUTPUT where
         <*> (#peek OUTPUT, VGA_RED)   ptr
         <*> (#peek OUTPUT, VGA_GREEN) ptr
         <*> (#peek OUTPUT, VGA_BLUE)  ptr
+    {-# INLINE poke #-}
     poke ptr OUTPUT{..} = do
         (#poke OUTPUT, VGA_HSYNC) ptr vgaHSYNC
         (#poke OUTPUT, VGA_VSYNC) ptr vgaVSYNC

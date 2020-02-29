@@ -46,6 +46,9 @@ draw MkParams{..} MkSt{..} (x0, y0)
     | isBall = yellow
     | otherwise = backColor
   where
+    (ballX, _) = _ballH
+    (ballY, _) = _ballV
+
     x = fromIntegral x0
     y = fromIntegral y0
 
@@ -56,7 +59,7 @@ draw MkParams{..} MkSt{..} (x0, y0)
     rect (x0, y0) (w, h) x y = x `between` (x0, x0 + w) && y `between` (y0, y0 + h)
 
     isPaddle = rect (paddleStart, _paddleY) (paddleWidth, paddleSize) x y
-    isBall = rect (_ballX, _ballY) (ballSize, ballSize) x y
+    isBall = rect (ballX, ballY) (ballSize, ballSize) x y
 
     paddleColor = (0x40, 0x80, 0xf0)
     ballColor = (0xf0, 0xe0, 0x40)

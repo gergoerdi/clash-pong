@@ -22,6 +22,20 @@ import Data.Word
 import Control.Monad.State
 import Control.Lens hiding (Index)
 
+move :: (Num a) => (a, a) -> (a, a)
+move (x, dx) = (x + dx, dx)
+
+clamp :: (Ord a) => (a, a) -> a -> a
+clamp (lo, hi) = max lo . min hi
+
+reflect :: (Num a, Num a', Ord a, Ord a') => (a, a') -> (a, a') -> (Bool, (a, a'))
+reflect (p, n) (x, dx)
+    | sameDirection n diff = (True, (p + diff, negate dx))
+    | otherwise = (False, (x, dx))
+  where
+    sameDirection u v = compare 0 u == compare 0 v
+    diff = p - x
+
 type ScreenWidth = 256
 type ScreenHeight = 200
 
@@ -32,8 +46,7 @@ screenHeight :: Int
 screenHeight = snatToNum (SNat @ScreenHeight)
 
 data St = MkSt
-    { _ballX, _ballY :: Int
-    , _ballSpeedX, _ballSpeedY :: Int
+    { _ballH, _ballV :: (Int, Int)
     , _paddleY :: Int
     , _gameOver :: Bool
     }
@@ -42,10 +55,8 @@ makeLenses ''St
 
 initState :: St
 initState = MkSt
-    { _ballX = 10
-    , _ballY = 100
-    , _ballSpeedX = 2
-    , _ballSpeedY = 3
+    { _ballH = (10, 2)
+    , _ballV = (100, 3)
     , _paddleY = 100
     , _gameOver = False
     }
@@ -60,46 +71,31 @@ data InputState = MkInputState
     , paddleDown :: Bool
     }
 
-double :: (Num a) => a -> a
-double x = x + x
+reflectM :: (Num a, Num a', Ord a, Ord a') => (a, a') -> State (a, a') Bool
+reflectM = state . reflect
 
-reflect :: (Num a, Num a', Ord a, Ord a') => Lens' s a -> Lens' s a' -> (a, a') -> State s Bool
-reflect x x' (p, n) = do
-    x0 <- use x
-    let over = dir $ p - x0
-    if over > 0 then do
-        x += dir (double over)
-        x' %= negate
-        return True
-      else return False
-  where
-    dir = if n > 0 then id else negate
-
-move :: (Num a) => Lens' s a -> Lens' s a -> State s ()
-move x dx = do
-    dx <- use dx
-    x += dx
+moveM :: (Num a) => State (a, a) ()
+moveM = modify move
 
 x `between` (lo, hi) = lo <= x && x <= hi
 
-updateHoriz :: Params -> InputState -> State St ()
-updateHoriz MkParams{..} MkInputState{..} = do
-    move ballX ballSpeedX
-    reflect ballX ballSpeedX (wallSize, 1)
-    atPaddle <- gets $ \st@MkSt{..} -> _ballY `between` (_paddleY, _paddleY + paddleSize)
-    when atPaddle $ do
-        hitPaddle <- reflect ballX ballSpeedX (screenWidth - paddleWidth - ballSize, -1)
-        when hitPaddle $ ballSpeedY += nudge
-  where
-    nudge | paddleDown = nudgeSpeed
-          | paddleUp = negate nudgeSpeed
-          | otherwise = 0
+updateHoriz :: Params -> State St Bool
+updateHoriz MkParams{..} = do
+    atPaddle <- do
+        paddleY <- use paddleY
+        (y, _) <- use ballV
+        return $ y `between` (paddleY, paddleY + paddleSize)
+    zoom ballH $ do
+        moveM
+        reflectM (wallSize, 1)
+        if not atPaddle then return False else reflectM (screenWidth - paddleWidth - ballSize, -1)
 
 updateVert :: Params -> State St ()
 updateVert MkParams{..} = void $ do
-    move ballY ballSpeedY
-    reflect ballY ballSpeedY (wallSize, 1)
-    reflect ballY ballSpeedY (screenHeight - wallSize - ballSize, -1)
+    zoom ballV $ do
+      moveM
+      reflectM (wallSize, 1)
+      reflectM (screenHeight - wallSize - ballSize, -1)
 
 updatePaddle :: Params -> InputState -> State St ()
 updatePaddle MkParams{..} MkInputState{..} = do
@@ -107,19 +103,23 @@ updatePaddle MkParams{..} MkInputState{..} = do
     when paddleDown $ paddleY += paddleSpeed
     paddleY %= clamp (wallSize, screenHeight - (wallSize + paddleSize))
 
-clamp :: (Ord a) => (a, a) -> a -> a
-clamp (lo, hi) = max lo . min hi
-
 updateState :: Params -> InputState -> St -> St
-updateState params inp@MkInputState{..} = execState $ do
+updateState params@MkParams{..} inp@MkInputState{..} = execState $ do
     gameOver .= False
+
     updateVert params
-    updateHoriz params inp
+    hitPaddle <- updateHoriz params
+    when hitPaddle $ ballV._2 += nudge
+
     updatePaddle params inp
-    outOfBounds <- gets $ \st@MkSt{..} -> _ballX > screenWidth
+    outOfBounds <- zoom ballH $ gets $ \(x, _) -> x > screenWidth
     when outOfBounds $ do
         gameOver .= True
-        ballX .= screenWidth `shiftR` 1
+        ballH._1 .= screenWidth `shiftR` 1
+  where
+    nudge | paddleDown = nudgeSpeed
+          | paddleUp = negate nudgeSpeed
+          | otherwise = 0
 
 defaultParams :: Params
 defaultParams = MkParams

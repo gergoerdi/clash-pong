@@ -4,7 +4,6 @@ module Pong.Video
     ( draw
 
     , Color
-    , Draw
     ) where
 
 import Pong.Game
@@ -34,10 +33,8 @@ red = (0x80, 0x00, 0x00)
 gray :: Color
 gray = (0x30, 0x30, 0x30)
 
-type Draw w h = (Index w, Index h) -> Color
-
-draw :: Params -> St -> Draw ScreenWidth ScreenHeight
-draw MkParams{..} MkSt{..} (x0, y0)
+draw :: Params -> St -> Index ScreenWidth -> Index ScreenHeight -> Color
+draw MkParams{..} MkSt{..} ix iy
     | isWall = white
     | isPaddle = blue
     | isBall = yellow
@@ -46,17 +43,17 @@ draw MkParams{..} MkSt{..} (x0, y0)
     (ballX, _) = _ballH
     (ballY, _) = _ballV
 
-    x = fromIntegral x0
-    y = fromIntegral y0
+    x = fromIntegral ix
+    y = fromIntegral iy
 
     isWall = x < wallSize || y < wallSize || y >= (snatToNum (SNat @ScreenHeight) - wallSize)
 
     paddleStart = snatToNum (SNat @ScreenWidth) - paddleWidth
 
-    rect (x0, y0) (w, h) x y = x `between` (x0, x0 + w) && y `between` (y0, y0 + h)
+    rect (x0, y0) (w, h) = x `between` (x0, x0 + w) && y `between` (y0, y0 + h)
 
-    isPaddle = rect (paddleStart, _paddleY) (paddleWidth, paddleSize) x y
-    isBall = rect (ballX, ballY) (ballSize, ballSize) x y
+    isPaddle = rect (paddleStart, _paddleY) (paddleWidth, paddleSize)
+    isBall = rect (ballX, ballY) (ballSize, ballSize)
 
     paddleColor = (0x40, 0x80, 0xf0)
     ballColor = (0xf0, 0xe0, 0x40)

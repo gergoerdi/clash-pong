@@ -50,4 +50,4 @@ topEntity = withEnableGen board
             y <- scale (SNat @2) . center @(2 * ScreenHeight) $ vgaY
             params <- params
             st <- st
-            pure $ draw params st <$> ((,) <$> x <*> y)
+            pure $ draw params st <$> x <*> y

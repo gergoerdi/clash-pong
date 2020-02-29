@@ -3,7 +3,7 @@ module Pong.Game
     ( Params(..)
     , defaultParams
 
-    , InputState(..)
+    , Inputs(..)
     , St(..)
     , initState
     , updateState
@@ -66,7 +66,7 @@ data Params = MkParams
     , paddleWidth, paddleSpeed, nudgeSpeed :: Int
     }
 
-data InputState = MkInputState
+data Inputs = MkInputs
     { paddleUp :: Bool
     , paddleDown :: Bool
     }
@@ -97,14 +97,14 @@ updateVert MkParams{..} = void $ do
       reflectM (wallSize, 1)
       reflectM (screenHeight - wallSize - ballSize, -1)
 
-updatePaddle :: Params -> InputState -> State St ()
-updatePaddle MkParams{..} MkInputState{..} = do
+updatePaddle :: Params -> Inputs -> State St ()
+updatePaddle MkParams{..} MkInputs{..} = do
     when paddleUp $ paddleY -= paddleSpeed
     when paddleDown $ paddleY += paddleSpeed
     paddleY %= clamp (wallSize, screenHeight - (wallSize + paddleSize))
 
-updateState :: Params -> InputState -> St -> St
-updateState params@MkParams{..} inp@MkInputState{..} = execState $ do
+updateState :: Params -> Inputs -> St -> St
+updateState params@MkParams{..} inp@MkInputs{..} = execState $ do
     gameOver .= False
 
     updateVert params

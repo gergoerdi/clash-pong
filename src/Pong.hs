@@ -41,7 +41,7 @@ topEntity = withEnableGen board
         frameEnd = isFalling False (isJust <$> vgaY)
 
         params = pure defaultParams
-        inputs = MkInputState <$> up <*> down
+        inputs = MkInputs <$> up <*> down
 
         st = regEn initState frameEnd $ (updateState <$> params <*> inputs <*> st)
 

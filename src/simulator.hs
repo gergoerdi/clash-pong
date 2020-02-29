@@ -12,7 +12,7 @@ import Control.Monad.State
 
 main :: IO ()
 main = flip evalStateT initState $ withMainWindow "Pong" 4 $ \events keyState -> do
-    modify $ updateState defaultParams $ MkInputState
+    modify $ updateState defaultParams $ MkInputs
         { paddleUp = keyState ScancodeUp
         , paddleDown = keyState ScancodeDown
         }

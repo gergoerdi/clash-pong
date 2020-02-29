@@ -7,15 +7,12 @@ module Pong.Video
     , Draw
     ) where
 
+import Pong.Game
+
 import Prelude
 import Clash.Prelude hiding (lift)
 import RetroClash.Utils
-
-import Pong.Game
-
 import Data.Word
-import Control.Monad.State
-import Control.Lens hiding (Index)
 
 type Color = (Word8, Word8, Word8)
 

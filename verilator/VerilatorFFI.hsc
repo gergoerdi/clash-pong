@@ -32,13 +32,11 @@ instance Storable INPUT where
     {-# INLINE peek #-}
     peek ptr    = INPUT
         <$> (#peek INPUT, RESET) ptr
-        <*> (#peek INPUT, SWITCHES) ptr
         <*> (#peek INPUT, BTN_UP) ptr
         <*> (#peek INPUT, BTN_DOWN) ptr
     {-# INLINE poke #-}
     poke ptr INPUT{..} = do
         (#poke INPUT, RESET) ptr reset
-        (#poke INPUT, SWITCHES) ptr switches
         (#poke INPUT, BTN_UP) ptr btnUp
         (#poke INPUT, BTN_DOWN) ptr btnDown
 

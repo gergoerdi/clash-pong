@@ -1,6 +1,5 @@
 module Top(
            input        CLK100MHZ,
-           input [7:0]  SW,
            input        BTNU,
            input        BTND,
            output       VGA_HS,
@@ -29,7 +28,6 @@ module Top(
    Pong u_Pong
      (.CLK_25MHZ(CLK_25MHZ),
       .RESET(!CLK_LOCKED),
-      .SWITCHES(SW[7:0]),
       .BTN_UP(BTNU),
       .BTN_DOWN(BTND),
       .VGA_HSYNC(VGA_HS),

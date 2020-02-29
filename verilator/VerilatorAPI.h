@@ -6,7 +6,6 @@ typedef Bool Bit;
 typedef struct
 {
     Bool RESET;
-    uint8_t SWITCHES;
     Bit BTN_UP;
     Bit BTN_DOWN;
 } INPUT;

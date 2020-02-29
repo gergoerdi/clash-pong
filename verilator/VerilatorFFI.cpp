@@ -25,7 +25,6 @@ void vshutdown(VSim *top)
 void vstep(VSim* top, const INPUT* input, OUTPUT* output)
 {
     top->RESET = input->RESET;
-    top->SWITCHES = input->SWITCHES;
     top->BTN_UP = input->BTN_UP;
     top->BTN_DOWN = input->BTN_DOWN;
 

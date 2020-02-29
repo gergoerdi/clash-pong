@@ -8,7 +8,6 @@ import Data.Int
 
 data INPUT = INPUT
     { reset :: Bool
-    , switches :: Word8
     , btnUp :: Bit
     , btnDown :: Bit
     }

@@ -49,7 +49,6 @@ main = withRunner $ \runCycle -> do
     flip evalStateT (initSink, (0, t0)) $ withMainWindow "Pong" 2 $ \events keyState -> fmap Just $ do
         let input = INPUT
                 { reset = False
-                , switches = 0
                 , btnUp = boolToBit $ keyState ScancodeUp
                 , btnDown = boolToBit $ keyState ScancodeDown
                 }

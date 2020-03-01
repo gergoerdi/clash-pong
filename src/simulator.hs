@@ -6,14 +6,20 @@ import Prelude
 import Pong.Game
 import Pong.Video
 import RetroClash.Sim.SDL
-
-import SDL hiding (get)
 import Control.Monad.State
 
 main :: IO ()
-main = flip evalStateT initState $ withMainWindow "Pong" 4 $ \events keyState -> do
+main = flip evalStateT initState $ withMainWindow videoParams $ \events keyDown -> do
+    when (keyDown ScancodeEscape) mzero
+
     modify $ updateState defaultParams $ MkInputs
-        { paddleUp = keyState ScancodeUp
-        , paddleDown = keyState ScancodeDown
+        { paddleUp = keyDown ScancodeUp
+        , paddleDown = keyDown ScancodeDown
         }
-    gets $ Just . rasterizePattern . draw defaultParams
+    gets $ rasterizePattern . draw defaultParams
+  where
+    videoParams = MkVideoParams
+        { windowTitle = "Pong"
+        , screenScale = 4
+        , screenRefreshRate = 60
+        }

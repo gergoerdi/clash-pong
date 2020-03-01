@@ -14,7 +14,6 @@ import VerilatorFFI
 import Foreign.Storable
 import Foreign.Marshal.Alloc
 
-import SDL hiding (get)
 import Control.Monad
 import Control.Monad.State
 import Data.Array.IO
@@ -46,18 +45,20 @@ main = withRunner $ \runCycle -> do
     buf <- newBufferArray
     t0 <- getTime Monotonic
 
-    flip evalStateT (initSink, (0, t0)) $ withMainWindow "Pong" 2 $ \events keyState -> fmap Just $ do
+    flip evalStateT (initSink, (0, t0)) $ withMainWindow videoParams $ \events keyDown -> do
+        when (keyDown ScancodeEscape) mzero
+
         let input = INPUT
                 { reset = False
-                , btnUp = boolToBit $ keyState ScancodeUp
-                , btnDown = boolToBit $ keyState ScancodeDown
+                , btnUp = boolToBit $ keyDown ScancodeUp
+                , btnDown = boolToBit $ keyDown ScancodeDown
                 }
 
         untilM_ (return ()) $ do
             vgaOut <- do
                 OUTPUT{..} <- liftIO $ runCycle input
                 return (vgaHSYNC, vgaVSYNC, (vgaRED, vgaGREEN, vgaBLUE))
-            zoom _1 $ vgaSinkBuf vga640x480at60 buf vgaOut
+            zoom _1 $ lift $ vgaSinkBuf vga640x480at60 buf vgaOut
 
         zoom _2 $ do
             (i, t0) <- get
@@ -70,3 +71,9 @@ main = withRunner $ \runCycle -> do
               else put (i + 1, t0)
 
         return $ rasterizeBuffer buf
+  where
+    videoParams = MkVideoParams
+        { windowTitle = "Pong (Verilator)"
+        , screenScale = 2
+        , screenRefreshRate = 60
+        }

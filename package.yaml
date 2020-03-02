@@ -16,7 +16,6 @@ dependencies:
   - mtl
   - sdl2
   - text
-  - clock
   - array
   - monad-loops
 

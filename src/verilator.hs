@@ -19,14 +19,11 @@ import Control.Monad.State
 import Data.Array.IO
 import Control.Lens
 
+import SDL (ticks)
 import Data.Int
-import System.Clock
 import Text.Printf
 import Control.Monad.Loops
 import Data.Text
-
-millisec :: TimeSpec -> Int64
-millisec (TimeSpec sec nsec) = sec * 1_000 + nsec `div` 1_000_000
 
 {-# INLINE withRunner #-}
 withRunner :: ((INPUT -> IO OUTPUT) -> IO a) -> IO a
@@ -43,10 +40,10 @@ withRunner act = alloca $ \inp -> alloca $ \outp -> do
 main :: IO ()
 main = withRunner $ \runCycle -> do
     buf <- newBufferArray
-    t0 <- getTime Monotonic
+    t0 <- ticks
 
-    flip evalStateT (initSink, (0, t0)) $ withMainWindow videoParams $ \events keyDown -> do
-        when (keyDown ScancodeEscape) mzero
+    flip evalStateT (initSink, (1, t0)) $ withMainWindow videoParams $ \events keyDown -> do
+        guard $ not $ keyDown ScancodeEscape
 
         let input = INPUT
                 { reset = False
@@ -63,11 +60,11 @@ main = withRunner $ \runCycle -> do
         zoom _2 $ do
             (i, t0) <- get
             if i == 60 then do
-                t <- liftIO $ getTime Monotonic
-                let dt = millisec t - millisec t0
+                t <- ticks
+                let dt = t - t0
                     fps = 1000 / (fromIntegral dt / 60) :: Double
                 liftIO $ printf "60 frames in %d ms, %.1f fps\n" dt fps
-                put (0, t)
+                put (1, t)
               else put (i + 1, t0)
 
         return $ rasterizeBuffer buf

@@ -10,7 +10,7 @@ import Control.Monad.State
 
 main :: IO ()
 main = flip evalStateT initState $ withMainWindow videoParams $ \events keyDown -> do
-    when (keyDown ScancodeEscape) mzero
+    guard $ not $ keyDown ScancodeEscape
 
     modify $ updateState defaultParams $ MkInputs
         { paddleUp = keyDown ScancodeUp

@@ -1,5 +1,5 @@
 {-# LANGUAGE NumericUnderscores, RecordWildCards, TypeApplications #-}
-{-# LANGUAGE ApplicativeDo, ViewPatterns, TupleSections #-}
+{-# LANGUAGE ViewPatterns #-}
 module Pong where
 
 import Clash.Prelude
@@ -40,14 +40,13 @@ topEntity = withEnableGen board
         VGADriver{..} = vgaDriver vga640x480at60
         frameEnd = isFalling False (isJust <$> vgaY)
 
-        params = pure defaultParams
+        params = defaultParams
         inputs = MkInputs <$> up <*> down
 
-        st = regEn initState frameEnd $ (updateState <$> params <*> inputs <*> st)
+        st = regEn initState frameEnd $ (updateState params <$> inputs <*> st)
 
-        rgb = fmap (maybe (0, 0, 0) bitCoerce) $ do
-            x <- scale (SNat @2) . center @(2 * ScreenWidth) $ vgaX
-            y <- scale (SNat @2) . center @(2 * ScreenHeight) $ vgaY
-            params <- params
-            st <- st
-            pure $ draw params st <$> x <*> y
+        rgb = fmap (maybe (0, 0, 0) bitCoerce) $
+            liftA2 <$> (draw params <$> st) <*> x <*> y
+          where
+            x = scale (SNat @2) . center @(2 * ScreenWidth) $ vgaX
+            y = scale (SNat @2) . center @(2 * ScreenHeight) $ vgaY

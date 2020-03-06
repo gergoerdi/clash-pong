@@ -52,7 +52,7 @@ draw MkParams{..} MkSt{..} ix iy
 
     rect (x0, y0) (w, h) = x `between` (x0, x0 + w) && y `between` (y0, y0 + h)
 
-    isPaddle = rect (paddleStart, _paddleY) (paddleWidth, paddleSize)
+    isPaddle = rect (paddleStart, _paddleY) (paddleWidth, paddleHeight)
     isBall = rect (ballX, ballY) (ballSize, ballSize)
 
     paddleColor = (0x40, 0x80, 0xf0)

@@ -32,6 +32,13 @@ packages:
       sha256: cf6a8f888fa48c2c6d6c63badf884703a053a559b85cefff6b74e35f5a0102bb
   original:
     hackage: concurrent-supply-0.1.7
+- completed:
+    hackage: shake-0.18.2@sha256:0d6a5df63fe1a5c0a6d75ee86e36306cce8306f790ac8c1f791d65757ff62101,14806
+    pantry-tree:
+      size: 11991
+      sha256: c65170e2f7c3369dbd487a7ab7e1a3542dbc943f05eacca12950001e3414ebfb
+  original:
+    hackage: shake-0.18.2
 snapshots:
 - completed:
     size: 491372

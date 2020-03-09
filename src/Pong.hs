@@ -3,6 +3,7 @@
 module Pong where
 
 import Clash.Prelude
+import Clash.Annotations.TH
 import RetroClash.Utils
 import RetroClash.VGA
 import RetroClash.Video
@@ -15,24 +16,12 @@ import Pong.Video
 -- | 25 MHz clock, needed for the VGA mode we use.
 createDomain vSystem{vName="Dom25", vPeriod = hzToPeriod 25_175_000}
 
-{-# ANN topEntity
-  (Synthesize
-    { t_name   = "Pong"
-    , t_inputs =
-          [ PortName "CLK_25MHZ"
-          , PortName "RESET"
-          , PortName "BTN_UP"
-          , PortName "BTN_DOWN"
-          ]
-    , t_output =
-            vgaPort
-    }) #-}
 topEntity
-    :: Clock Dom25
-    -> Reset Dom25
-    -> Signal Dom25 (Active High)
-    -> Signal Dom25 (Active High)
-    -> VGAOut Dom25 8 8 8
+    :: "CLK_25MHZ" ::: Clock Dom25
+    -> "RESET"     ::: Reset Dom25
+    -> "BTN_UP"    ::: Signal Dom25 (Active High)
+    -> "BTN_DOWN"  ::: Signal Dom25 (Active High)
+    -> "VGA"       ::: VGAOut Dom25 8 8 8
 topEntity = withEnableGen board
   where
     board (fmap fromActive -> up) (fmap fromActive -> down) = vgaOut vgaSync rgb
@@ -50,3 +39,4 @@ topEntity = withEnableGen board
           where
             x = scale (SNat @2) . center @(2 * ScreenWidth) $ vgaX
             y = scale (SNat @2) . center @(2 * ScreenHeight) $ vgaY
+makeTopEntity 'topEntity

@@ -25,7 +25,7 @@ module Top(
       .LOCKED(CLK_LOCKED)
       );
 
-   Pong u_Pong
+   topEntity u_topEntity
      (.CLK_25MHZ(CLK_25MHZ),
       .RESET(!CLK_LOCKED),
       .BTN_UP(BTNU),

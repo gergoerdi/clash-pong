@@ -18,7 +18,7 @@ import Control.Monad.Trans.Class
 clashProject = ClashProject
     { projectName = "Pong"
     , clashModule = "Pong"
-    , clashTopName = "Pong"
+    , clashTopName = "topEntity"
     , topName = "Top"
     , clashFlags =
         [ "-i../retroclash-lib/src"

@@ -95,8 +95,9 @@ checkBounds :: Params -> State St ()
 checkBounds MkParams{..} = do
     outOfBounds <- zoom ballH $ gets $ \(x, _) -> x > screenWidth
     gameOver .= outOfBounds
-    when outOfBounds $ do
-        ballH._1 .= screenWidth `shiftR` 1
+    when outOfBounds $ resetBall
+  where
+    resetBall = ballH._1 .= screenWidth `shiftR` 1
 
 updateHoriz :: Params -> State St Bool
 updateHoriz MkParams{..} = do

@@ -1,4 +1,4 @@
-resolver: clash-1.2.yaml
+resolver: clash-HEAD.yaml
 
 extra-deps:
   - retroclash-lib

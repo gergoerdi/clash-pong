@@ -21,7 +21,7 @@ topEntity
     -> "RESET"     ::: Reset Dom25
     -> "BTN_UP"    ::: Signal Dom25 (Active High)
     -> "BTN_DOWN"  ::: Signal Dom25 (Active High)
-    -> "VGA"       ::: VGAOut Dom25 8 8 8
+    -> "VGA"       ::: VGAOut Dom25 (RGB 8 8 8)
 topEntity = withEnableGen board
   where
     board (fmap fromActive -> up) (fmap fromActive -> down) = vgaOut vgaSync rgb
@@ -34,7 +34,7 @@ topEntity = withEnableGen board
 
         st = regEn initState frameEnd $ (updateState params <$> inputs <*> st)
 
-        rgb = fmap (maybe (0, 0, 0) bitCoerce) $
+        rgb = fmap (maybe (RGB 0 0 0) bitCoerce) $
             liftA2 <$> (draw params <$> st) <*> x <*> y
           where
             x = scale (SNat @2) . center @(2 * ScreenWidth) $ vgaX

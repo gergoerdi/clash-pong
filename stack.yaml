@@ -3,3 +3,7 @@ resolver: clash-HEAD.yaml
 extra-deps:
   - retroclash-lib
   - retroclash-sim
+
+  - barbies-2.0.1.0
+  - github: gergoerdi/barbies-th
+    commit: af2335de760b02ad6dcaff1db29c1055b5202c1d

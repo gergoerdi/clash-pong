@@ -25,4 +25,5 @@ main =
         { windowTitle = "Pong"
         , screenScale = 4
         , screenRefreshRate = 60
+        , reportFPS = True
         }

@@ -2,6 +2,12 @@ name: clash-pong
 version: 0.1.0
 category: hardware, game
 
+custom-setup:
+  dependencies:
+    - base
+    - Cabal
+    - clashilator
+    
 dependencies:
   - base
   - clash-prelude
@@ -46,14 +52,8 @@ executables:
     when:
     - condition: flag(verilator)
       then:
-        source-dirs:
-          - src
-          - verilator
-        extra-libraries: stdc++ 
-        extra-lib-dirs: verilator
-        ghc-options: -O3 -fPIC -pgml g++ -optl-Wl,--allow-multiple-definition -optl-Wl,--whole-archive -optl-Wl,-Bstatic -optl-Wl,-L_build/verilator -optl-Wl,-lVerilatorFFI -optl-Wl,-Bdynamic -optl-Wl,--no-whole-archive
-        
-        build-tools: hsc2hs
-        include-dirs: verilator
+        verbatim:
+          x-clashilator-top-is: Pong
+          x-clashilator-clock: CLK_25MHZ
       else:
         buildable: false

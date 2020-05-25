@@ -1,16 +1,14 @@
 {-# LANGUAGE RecordWildCards, OverloadedStrings, NumericUnderscores #-}
 module Main where
 
-import Prelude
-import Clash.Prelude (boolToBit)
+import Clash.Prelude hiding (lift)
 
 import RetroClash.VGA
 import RetroClash.Sim.SDL
 import RetroClash.Sim.VGA
 import RetroClash.Sim.VGASDL
 
-import SimInterface
-import VerilatorFFI
+import Clash.Clashilator.FFI
 import Foreign.Storable
 import Foreign.Marshal.Alloc
 
@@ -46,15 +44,15 @@ main = withRunner $ \runCycle -> do
         guard $ not $ keyDown ScancodeEscape
 
         let input = INPUT
-                { reset = False
-                , btnUp = boolToBit $ keyDown ScancodeUp
-                , btnDown = boolToBit $ keyDown ScancodeDown
+                { iRESET = low
+                , iBTN_UP = boolToBit $ keyDown ScancodeUp
+                , iBTN_DOWN = boolToBit $ keyDown ScancodeDown
                 }
 
         untilM_ (return ()) $ do
             vgaOut <- do
                 OUTPUT{..} <- liftIO $ runCycle input
-                return (vgaHSYNC, vgaVSYNC, (vgaRED, vgaGREEN, vgaBLUE))
+                return (oVGA_HSYNC, oVGA_VSYNC, (oVGA_RED, oVGA_GREEN, oVGA_BLUE))
             zoom _1 $ lift $ vgaSinkBuf vga640x480at60 buf vgaOut
 
         zoom _2 $ do

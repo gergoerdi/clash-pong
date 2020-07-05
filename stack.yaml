@@ -6,3 +6,6 @@ extra-deps:
 
   - github: gergoerdi/clashilator
     commit: 16373f805ad4006f629701bdfd1c37906d0f667b
+
+  - barbies-2.0.1.0
+  - barbies-th-0.1.2

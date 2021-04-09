@@ -21,14 +21,15 @@ main = shakeArgs shakeOptions{ shakeFiles = outDir } $ do
         [ "src" ]
         "Pong"
         [ "-Wno-partial-type-signatures"
+        , "-fclash-intwidth=32" -- To play nicely with Spartan 3 and 6
         ] $
         return ()
     phony "clashi" $ clash ["--interactive", "src/Pong.hs"]
 
     let targets =
             [ ("nexys-a7-50t", xilinxVivado nexysA750T)
-            -- , ("papilio-pro", xilinxISE papilioPro)
-            -- , ("papilio-one", xilinxISE papilioOne)
+            , ("papilio-pro", xilinxISE papilioPro)
+            , ("papilio-one", xilinxISE papilioOne)
             ]
 
     forM_ targets $ \(name, synth) -> do

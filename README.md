@@ -15,20 +15,24 @@ with the following content:
 
     TARGET = nexys-a7-50t
     VIVADO_ROOT = /opt/somewhere/where/vivado/is/installed
+    ISE_ROOT = /opt/somewhere/where/ise/is/installed
     
-Alternatively, if you have Vivado installed in Docker or similar, you
+Alternatively, if you have Vivado/ISE installed in Docker or similar, you
 can create a wrapper script and use that by setting `VIVADO` instead
 of `VIVADO_ROOT`:
 
     TARGET = nexys-a7-50t
-    VIVADO = /usr/local/lib/docker-scripts/xilinx-2019.1-ubuntu-18.04/run
+    VIVADO = /usr/local/lib/docker-scripts/xilinx-vivado-2019.1-ubuntu-18.04/run
+    ISE = /usr/local/lib/docker-scripts/xilinx-ise-14.7-ubuntu-12.04/run
 
 ## Supported target boards
 
-Currently, the only supported target is the Nexys A7-50T, a Xilinx
-7-series FPGA based dev board. Adding support to other Vivado or ISE
-based FPGA dev boards is going to be very straightforward, as long as
-they have VGA output and at least two input pushbuttons. 
+Currently, the supported target is the **Nexys A7-50T**, a Xilinx
+7-series FPGA based dev board, the **Papilio One** with a Xilinx
+Spartan 3, and the **Papilio Pro** with a Xilinx Spartan 6.  Adding
+support to other Vivado or ISE based FPGA dev boards is very
+straightforward with the included Shake rules, as long as they have
+VGA output and at least two input pushbuttons.
 
 Targeting other FPGA toolchains will require adding support in the
 Shake rules. Alternatively, you can always just run Clash, and import

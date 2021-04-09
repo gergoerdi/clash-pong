@@ -7,3 +7,6 @@
 [submodule "retroclash-sim"]
 	path = retroclash-sim
 	url = git@github.com:gergoerdi/retroclash-sim.git
+[submodule "clashilator"]
+	path = clashilator
+	url = git@github.com:gergoerdi/clashilator.git

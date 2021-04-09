@@ -3,9 +3,8 @@ resolver: clash-HEAD.yaml
 extra-deps:
   - retroclash-lib
   - retroclash-sim
-
-  - github: gergoerdi/clashilator
-    commit: 16373f805ad4006f629701bdfd1c37906d0f667b
+  - clashilator
+  - clash-shake
 
   - barbies-2.0.1.0
   - barbies-th-0.1.2

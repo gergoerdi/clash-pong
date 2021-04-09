@@ -16,8 +16,8 @@ dependencies:
   - retroclash-lib
   - retroclash-sim
 
-  - shake
-  - microstache
+  - clash-shake
+  
   - lens
   - mtl
   - sdl2
@@ -54,6 +54,5 @@ executables:
       then:
         verbatim:
           x-clashilator-top-is: Pong
-          x-clashilator-clock: CLK_25MHZ
       else:
         buildable: false

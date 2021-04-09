@@ -26,15 +26,17 @@ import Control.Lens hiding (Index)
 type ScreenWidth = 256
 type ScreenHeight = 200
 
-screenWidth :: Int
+type Coord = Signed 10
+
+screenWidth :: Coord
 screenWidth = snatToNum (SNat @ScreenWidth)
 
-screenHeight :: Int
+screenHeight :: Coord
 screenHeight = snatToNum (SNat @ScreenHeight)
 
 data St = MkSt
-    { _ballH, _ballV :: (Int, Int)
-    , _paddleY :: Int
+    { _ballH, _ballV :: (Coord, Coord)
+    , _paddleY :: Coord
     , _gameOver :: Bool
     }
     deriving (Show, Generic, NFDataX)
@@ -49,9 +51,9 @@ initState = MkSt
     }
 
 data Params = MkParams
-    { wallSize, ballSize :: Int
-    , paddleHeight, paddleWidth :: Int
-    , paddleSpeed, nudgeSpeed :: Int
+    { wallSize, ballSize :: Coord
+    , paddleHeight, paddleWidth :: Coord
+    , paddleSpeed, nudgeSpeed :: Coord
     }
 
 defaultParams :: Params

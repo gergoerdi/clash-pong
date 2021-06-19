@@ -37,7 +37,7 @@ topEntity = withEnableGen board
         rgb = fmap (maybe (0, 0, 0) bitCoerce) $
             liftA2 <$> (draw params <$> st) <*> x <*> y
           where
-            (x, _) = scale @ScreenWidth (SNat @2) . center $ vgaX
-            (y, _) = scale @ScreenHeight (SNat @2) . center $ vgaY
+            (x, _) = scale (SNat @2) . center $ vgaX
+            (y, _) = scale (SNat @2) . center $ vgaY
 
 makeTopEntity 'topEntity

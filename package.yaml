@@ -67,6 +67,9 @@ executables:
   pong:
     main: simulator.hs
 
+  pong-sim:
+    main: simulator-clash.hs
+
   pong-verilator:
     main: verilator.hs
     when:

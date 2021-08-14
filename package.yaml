@@ -67,11 +67,11 @@ executables:
   pong:
     main: simulator.hs
 
-  pong-sim:
+  pong-clash:
     main: simulator-clash.hs
 
   pong-verilator:
-    main: verilator.hs
+    main: simulator-verilator.hs
     when:
     - condition: flag(verilator)
       then:

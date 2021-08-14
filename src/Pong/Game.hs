@@ -58,7 +58,7 @@ data Params = MkParams
 
 defaultParams :: Params
 defaultParams = MkParams
-    { wallSize = 2
+    { wallSize = 5
     , ballSize = 5
     , paddleHeight = 50
     , paddleWidth = 5

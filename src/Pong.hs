@@ -34,8 +34,7 @@ topEntity = withEnableGen board
 
         st = regEn initState frameEnd $ (updateState params <$> inputs <*> st)
 
-        rgb = fmap (maybe (0, 0, 0) bitCoerce) $
-            liftA2 <$> (draw params <$> st) <*> x <*> y
+        rgb = withBorder <$> pure (0,0,0) <*> (draw params <$> st) <*> x <*> y
           where
             (x, _) = scale (SNat @2) . center $ vgaX
             (y, _) = scale (SNat @2) . center $ vgaY

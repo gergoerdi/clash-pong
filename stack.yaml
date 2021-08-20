@@ -5,6 +5,3 @@ extra-deps:
   - retroclash-sim
   - clashilator
   - clash-shake
-
-  - barbies-2.0.1.0
-  - barbies-th-0.1.2

@@ -4,6 +4,9 @@ This repository implements Pong in Haskell, both as a software program
 (using SDL for input and graphics) and as a hardware FPGA design via
 Clash.
 
+This code is part of the book *Retrocomputing with Clash: Haskell for
+FPGA Hardware Design* at <https://unsafePerform.IO/retroclash/>.
+
 ## Building
 
 Use `stack build` to build and `stack run pong` to run the software

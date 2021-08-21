@@ -27,7 +27,7 @@ of `VIVADO_ROOT`:
 
 ## Supported target boards
 
-Currently, the supported target is the **Nexys A7-50T**, a Xilinx
+Currently, the supported targets are the **Nexys A7-50T**, a Xilinx
 7-series FPGA based dev board, the **Papilio One** with a Xilinx
 Spartan 3, and the **Papilio Pro** with a Xilinx Spartan 6.  Adding
 support to other Vivado or ISE based FPGA dev boards is very

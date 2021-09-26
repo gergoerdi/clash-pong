@@ -14,14 +14,7 @@ import Foreign.Marshal.Alloc
 
 import Control.Monad
 import Control.Monad.State
-import Data.Array.IO
-import Control.Lens
-
-import SDL (ticks)
-import Data.Int
-import Text.Printf
 import Control.Monad.Loops
-import Data.Text
 
 {-# INLINE withRunner #-}
 withRunner :: ((INPUT -> IO OUTPUT) -> IO a) -> IO a

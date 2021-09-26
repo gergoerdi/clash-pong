@@ -4,6 +4,6 @@ extra-deps:
   - retroclash-lib-0.1.0
   - retroclash-sim-0.1.0
   - clashilator-0.1.0
-  - clash-shake-0.1.0
+  - clash-shake-0.1.1
 
   - monoidal-containers-0.6.0.1

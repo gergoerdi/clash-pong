@@ -14,11 +14,11 @@ version.
 
 For the hardware version, use the included Shakefile. An easy way to
 run it is via the provided `mk` shell script. Create a `build.mk` file
-with the following content:
+with content like the following:
 
     TARGET = nexys-a7-50t
-    VIVADO_ROOT = /opt/somewhere/where/vivado/is/installed
-    ISE_ROOT = /opt/somewhere/where/ise/is/installed
+    VIVADO_ROOT = /opt/somewhere/where/vivado/is/installed/bin
+    ISE_ROOT = /opt/somewhere/where/ise/is/installed/ISE/bin/lin64
     
 Alternatively, if you have Vivado/ISE installed in Docker or similar, you
 can create a wrapper script and use that by setting `VIVADO` instead

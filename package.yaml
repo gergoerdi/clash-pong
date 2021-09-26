@@ -17,16 +17,11 @@ dependencies:
   - clash-lib
   - clash-ghc
   - retroclash-lib
-  - retroclash-sim
 
   - clash-shake ^>= 0.1.1
   
   - lens
   - mtl
-  - sdl2
-  - text
-  - array
-  - monad-loops
 
 # Anything that Clash uses by default should go here
 default-extensions:
@@ -62,6 +57,9 @@ source-dirs:
   - src
 
 flags:
+  sim:
+    manual: True
+    default: True
   verilator:
     manual: True
     default: False
@@ -69,16 +67,34 @@ flags:
 executables:
   pong:
     main: simulator.hs
+    dependencies:
+      - retroclash-sim
+      - text
+      - array
+      - monad-loops
+    when:
+    - condition: "!flag(sim)"
+      buildable: false
 
   pong-clash:
     main: simulator-clash.hs
+    dependencies:
+      - retroclash-sim
+      - text
+      - array
+      - monad-loops
+    when:
+    - condition: "!flag(sim)"
+      buildable: false
 
   pong-verilator:
     main: simulator-verilator.hs
+    other-modules: []
+    dependencies:
+      - retroclash-sim
+      - monad-loops
+    verbatim:
+      x-clashilator-top-is: Pong
     when:
-    - condition: flag(verilator)
-      then:
-        verbatim:
-          x-clashilator-top-is: Pong
-      else:
-        buildable: false
+    - condition: "!(flag(sim) && flag(verilator))"
+      buildable: false

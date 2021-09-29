@@ -1,6 +1,7 @@
 {-# LANGUAGE RecordWildCards #-}
 import Clash.Shake
 import Clash.Shake.Xilinx
+import Clash.Shake.Intel
 
 import Development.Shake
 import Development.Shake.FilePath
@@ -30,6 +31,7 @@ main = shakeArgs shakeOptions{ shakeFiles = outDir } $ do
             [ ("nexys-a7-50t", xilinxVivado nexysA750T)
             , ("papilio-pro", xilinxISE papilioPro)
             , ("papilio-one", xilinxISE papilioOne)
+            , ("de0-nano", intelQuartus de0Nano)
             ]
 
     forM_ targets $ \(name, synth) -> do

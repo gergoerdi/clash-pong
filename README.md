@@ -19,6 +19,7 @@ with content like the following:
     TARGET = nexys-a7-50t
     VIVADO_ROOT = /opt/somewhere/where/vivado/is/installed/bin
     ISE_ROOT = /opt/somewhere/where/ise/is/installed/ISE/bin/lin64
+    QUARTUS_ROOT = /opt/somewhere/where/quartus/is/installed/bin
     
 Alternatively, if you have Vivado/ISE installed in Docker or similar, you
 can create a wrapper script and use that by setting `VIVADO` instead
@@ -27,13 +28,21 @@ of `VIVADO_ROOT`:
     TARGET = nexys-a7-50t
     VIVADO = /usr/local/lib/docker-scripts/xilinx-vivado-2019.1-ubuntu-18.04/run
     ISE = /usr/local/lib/docker-scripts/xilinx-ise-14.7-ubuntu-12.04/run
+    QUARTUS = /usr/local/lib/docker-scripts/intel-quartus-20.1-ubuntu-20.04/run
 
 ## Supported target boards
 
-Currently, the supported targets are the **Nexys A7-50T**, a Xilinx
-7-series FPGA based dev board, the **Papilio One** with a Xilinx
-Spartan 3, and the **Papilio Pro** with a Xilinx Spartan 6.  Adding
-support to other Vivado or ISE based FPGA dev boards is very
+* Xilinx ISE toolchain
+  * Papilio One (Spartan-3) with the Arcade MegaBoard
+  * Papilio Pro (Spartan-6) with the Arcade MegaBoard
+
+* Xilinx Vivado toolchain
+  * Nexys A7-50T (Artix-7)
+
+* Intel Quartus toolchain
+  * DE0-Nano (Cyclone IV) with Fen Logic VGA666 adapter
+
+Adding support for other Intel or Xilinx based FPGA dev boards is very
 straightforward with the included Shake rules, as long as they have
 VGA output and at least two input pushbuttons.
 

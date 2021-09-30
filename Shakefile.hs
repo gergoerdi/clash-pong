@@ -32,6 +32,7 @@ main = shakeArgs shakeOptions{ shakeFiles = outDir } $ do
             , ("papilio-pro", xilinxISE papilioPro)
             , ("papilio-one", xilinxISE papilioOne)
             , ("de0-nano", intelQuartus de0Nano)
+            , ("arrow-deca", intelQuartus arrowDECA)
             ]
 
     forM_ targets $ \(name, synth) -> do

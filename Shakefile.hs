@@ -30,6 +30,7 @@ main = shakeArgsWith shakeOptions{ shakeFiles = outDir } flags $ \flags targets 
             , ("papilio-pro", Xilinx.ise papilioPro)
             , ("papilio-one", Xilinx.ise papilioOne)
             , ("de0-nano", Intel.quartus de0Nano)
+            , ("arrow-deca", Intel.quartus arrowDeca)
             ]
 
     phony "clean" $ do

@@ -1,0 +1,3 @@
+[submodule "clash-shake"]
+	path = clash-shake
+	url = git@github.com:gergoerdi/clash-shake.git

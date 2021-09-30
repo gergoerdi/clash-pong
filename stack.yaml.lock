@@ -26,10 +26,10 @@ packages:
   original:
     hackage: clash-ghc-1.4.3
 - completed:
-    hackage: retroclash-lib-0.1.0@sha256:5034289d3b41a21a873e19e16f40ef3f502c4faed1aee51acf210b86dd48d657,3139
+    hackage: retroclash-lib-0.1.0@sha256:f003947c30432d215a2ce5451e2c48b9e67df561409fae749200fddb2d9968c0,3283
     pantry-tree:
       size: 1212
-      sha256: 2db95dd6aa37e7b84da82f39b76c68e6af986f81372192d7b2a4381516531525
+      sha256: 50451f7ebb81172a56171723945b03d72b4da8e9ec77456de91de628466bd636
   original:
     hackage: retroclash-lib-0.1.0
 - completed:
@@ -46,13 +46,6 @@ packages:
       sha256: becf6f269fc5530f909403620cb178a9322fbc0e288ddb408f961d99ab90961a
   original:
     hackage: clashilator-0.1.0
-- completed:
-    hackage: clash-shake-0.1.1@sha256:6a18bae71e08a1463d5851a09662dc294b11ecf31d7be504bb3037257841600e,1577
-    pantry-tree:
-      size: 570
-      sha256: 2447a75d9749ba49358ae5691009737c584de1d1eb20f831d62110eaa39a5ede
-  original:
-    hackage: clash-shake-0.1.1
 - completed:
     hackage: monoidal-containers-0.6.0.1@sha256:f56ea8fe91ff93da140e38b8dab4b94437b901818c13ba72fc7fc802290323ee,2583
     pantry-tree:

@@ -10,6 +10,14 @@ import Data.Foldable (forM_)
 outDir :: FilePath
 outDir = "_build"
 
+targets =
+    [ ("nexys-a7-50t", xilinxVivado nexysA750T)
+    , ("papilio-pro", xilinxISE papilioPro)
+    , ("papilio-one", xilinxISE papilioOne)
+    , ("de0-nano", intelQuartus de0Nano)
+    , ("arrow-deca", intelQuartus arrowDECA)
+    ]
+
 main :: IO ()
 main = shakeArgs shakeOptions{ shakeFiles = outDir } $ do
     useConfig "build.mk"
@@ -26,14 +34,6 @@ main = shakeArgs shakeOptions{ shakeFiles = outDir } $ do
         ] $
         return ()
     phony "clashi" $ clash ["--interactive", "src/Pong.hs"]
-
-    let targets =
-            [ ("nexys-a7-50t", xilinxVivado nexysA750T)
-            , ("papilio-pro", xilinxISE papilioPro)
-            , ("papilio-one", xilinxISE papilioOne)
-            , ("de0-nano", intelQuartus de0Nano)
-            , ("arrow-deca", intelQuartus arrowDECA)
-            ]
 
     forM_ targets $ \(name, synth) -> do
         SynthKit{..} <- synth kit (outDir </> name) ("target" </> name) "Top"

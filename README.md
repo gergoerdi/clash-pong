@@ -41,6 +41,7 @@ of `VIVADO_ROOT`:
 
 * Intel Quartus toolchain
   * DE0-Nano (Cyclone IV) with Fen Logic VGA666 adapter
+  * Arrow DECA (MAX 10)
 
 Adding support for other Intel or Xilinx based FPGA dev boards is very
 straightforward with the included Shake rules, as long as they have

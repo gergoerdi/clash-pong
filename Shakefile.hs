@@ -15,6 +15,7 @@ targets =
     , ("papilio-pro", xilinxISE papilioPro)
     , ("papilio-one", xilinxISE papilioOne)
     , ("de0-nano", intelQuartus de0Nano)
+    , ("arrow-deca", intelQuartus arrowDECA)
     ]
 
 main :: IO ()

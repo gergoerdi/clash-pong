@@ -1,6 +1,7 @@
 name: clash-pong
 version: 0.1.0
 category: hardware, game
+license: MIT
 
 extra-source-files:
   - README.md

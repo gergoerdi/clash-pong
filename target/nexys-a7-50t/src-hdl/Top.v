@@ -19,7 +19,7 @@ module Top(
    assign VGA_G = VGA_GREEN_FULL[7:4];
    assign VGA_B = VGA_BLUE_FULL[7:4];
 
-   ClockWiz25 u_ClockWiz25
+   MMCM_25 u_MMCM_25
      (.CLKIN_100MHZ(CLK100MHZ),
       .CLKOUT_25MHZ(CLK_25MHZ),
       .LOCKED(CLK_LOCKED)

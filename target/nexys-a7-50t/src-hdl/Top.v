@@ -9,7 +9,7 @@ module Top(
            output [3:0] VGA_B
            );
 
-   wire                 CLK_25MHZ;
+   wire                 CLK_25MHZ_RAW;
    wire                 CLK_LOCKED;
    wire [7:0]           VGA_RED_FULL;
    wire [7:0]           VGA_GREEN_FULL;
@@ -21,9 +21,12 @@ module Top(
 
    MMCM_25 u_MMCM_25
      (.CLKIN_100MHZ(CLK100MHZ),
-      .CLKOUT_25MHZ(CLK_25MHZ),
+      .CLKOUT_25MHZ(CLK_25MHZ_RAW),
       .LOCKED(CLK_LOCKED)
       );
+
+   wire        CLK_25MHZ;
+   BUFG BUFG(.I(CLK_25MHZ_RAW), .O(CLK_25MHZ));
 
    topEntity u_topEntity
      (.CLK_25MHZ(CLK_25MHZ),

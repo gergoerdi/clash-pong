@@ -5,6 +5,9 @@ module MMCM_25
    output wire CLKOUT_25MHZ
    );
 
+   wire        CLK_25MHZ_BUFG;
+   BUFG BUFG(.I(CLKRAW_25MHZ), .O(CLKOUT_25MHZ));
+
    parameter CLKFBOUT_MULT_F  = 36.375;
    parameter CLKOUT0_DIVIDE_F = 36.125;
    parameter DIVCLK_DIVIDE    = 4;
@@ -45,7 +48,7 @@ module MMCM_25
       .CLKFBIN    (FB_I),
       .CLKFBOUT   (FB_O),
 
-      .CLKOUT0    (CLKOUT_25MHZ)
+      .CLKOUT0    (CLKRAW_25MHZ)
       );
 
 

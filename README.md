@@ -42,6 +42,9 @@ of `VIVADO_ROOT`:
 * Intel Quartus toolchain
   * DE0-Nano (Cyclone IV) with Fen Logic VGA666 adapter
 
+* SymbiFlow open source toolchain (experimental, pass `--symbiflow` to `mk` to use it)
+  * Nexys A7-50T (Artix-7)
+
 Adding support for other Intel or Xilinx based FPGA dev boards is very
 straightforward with the included Shake rules, as long as they have
 VGA output and at least two input pushbuttons.

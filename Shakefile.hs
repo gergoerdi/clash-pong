@@ -1,7 +1,7 @@
 {-# LANGUAGE RecordWildCards #-}
 import Clash.Shake
-import Clash.Shake.Xilinx
-import Clash.Shake.Intel
+import Clash.Shake.Xilinx as Xilinx
+import Clash.Shake.Intel as Intel
 
 import Development.Shake
 import Development.Shake.FilePath
@@ -11,10 +11,10 @@ outDir :: FilePath
 outDir = "_build"
 
 targets =
-    [ ("nexys-a7-50t", xilinxVivado nexysA750T)
-    , ("papilio-pro", xilinxISE papilioPro)
-    , ("papilio-one", xilinxISE papilioOne)
-    , ("de0-nano", intelQuartus de0Nano)
+    [ ("nexys-a7-50t", Xilinx.vivado nexysA750T)
+    , ("papilio-pro", Xilinx.ise papilioPro)
+    , ("papilio-one", Xilinx.ise papilioOne)
+    , ("de0-nano", Intel.quartus de0Nano)
     ]
 
 main :: IO ()

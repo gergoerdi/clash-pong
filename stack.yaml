@@ -1,4 +1,4 @@
-resolver: clash-1.4.3.yaml
+resolver: clash-1.4.6.yaml
 
 packages:
     - clash-shake

@@ -17,7 +17,7 @@ data Flags = UseSymbiFlow deriving Eq
 flags = [Option "" ["symbiflow"] (NoArg $ Right UseSymbiFlow) "Use SymbiFlow instead of vendor toolchain"]
 
 main :: IO ()
-main = shakeArgsWith shakeOptions{ shakeFiles = outDir } flags $ \flags targets -> pure $ Just $ do
+main = shakeArgsWith shakeOptions{ shakeFiles = outDir } flags $ \flags targets -> pure $ Just $ withTargets targets $ do
     useConfig "build.mk"
 
     let useSymbiFlow = UseSymbiFlow `elem` flags
@@ -32,24 +32,20 @@ main = shakeArgsWith shakeOptions{ shakeFiles = outDir } flags $ \flags targets 
             , ("de0-nano", Intel.quartus de0Nano)
             ]
 
-    let rules = do
-            phony "clean" $ do
-                putNormal $ "Cleaning files in " <> outDir
-                removeFilesAfter outDir [ "//*" ]
+    phony "clean" $ do
+        putNormal $ "Cleaning files in " <> outDir
+        removeFilesAfter outDir [ "//*" ]
 
-            kit@ClashKit{..} <- clashRules (outDir </> "clash") Verilog
-                [ "src" ]
-                "Pong"
-                [ "-Wno-partial-type-signatures"
-                , "-fclash-intwidth=32" -- To play nicely with Spartan 3 and 6
-                ] $
-                return ()
-            phony "clashi" $ clash ["--interactive", "src/Pong.hs"]
+    kit@ClashKit{..} <- clashRules (outDir </> "clash") Verilog
+        [ "src" ]
+        "Pong"
+        [ "-Wno-partial-type-signatures"
+        , "-fclash-intwidth=32" -- To play nicely with Spartan 3 and 6
+        ] $
+        return ()
+    phony "clashi" $ clash ["--interactive", "src/Pong.hs"]
 
-            forM_ boards $ \(name, synth) -> do
-                SynthKit{..} <- synth kit (outDir </> name) ("target" </> name) "Top"
-
-                mapM_ (uncurry $ nestedPhony name) $
-                  ("bitfile", need [bitfile]):phonies
-
-    if null targets then rules else want targets >> withoutActions rules
+    forM_ boards $ \(name, synth) -> do
+        SynthKit{..} <- synth kit (outDir </> name) ("target" </> name) "Top"
+        mapM_ (uncurry $ nestedPhony name) $
+          ("bitfile", need [bitfile]):phonies

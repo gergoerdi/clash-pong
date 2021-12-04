@@ -19,8 +19,8 @@ dependencies:
   - clash-ghc
   - retroclash-lib
 
-  - clash-shake ^>= 0.2.0
-  
+  - clash-shake ^>= 0.2.1
+
   - lens
   - mtl
 

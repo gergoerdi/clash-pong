@@ -13,17 +13,18 @@ createDomain vSystem{vName="Dom50", vPeriod = hzToPeriod 50_000_000}
 type I2CFreq = 20_000
 
 topEntity
-    :: "clk"          ::: Clock Dom50
-    -> "reset"        ::: Reset Dom50
-    -> "enable"       ::: Enable Dom50
-    -> "sda_read"     ::: Signal Dom50 Bit
-    -> "scl_read"     ::: Signal Dom50 Bit
-    -> Signal Dom50
-       ( "sda_write" ::: ("en" ::: Bool, "dat" ::: Bit)
-       , "scl_write" ::: ("en" ::: Bool, "dat" ::: Bit)
+    :: "CLK_50MHZ"    ::: Clock Dom50
+    -> "RESET"        ::: Reset Dom50
+    -> "I2C" :::
+       ( "SDA_RD"    ::: Signal Dom50 Bit
+       , "SCL_RD"    ::: Signal Dom50 Bit
        )
-topEntity clk reset en sdaRead sclRead =
-  let circ = exposeClockResetEnable (run (SNat @I2CFreq)) clk reset en sdaRead sclRead
+    -> "I2C" ::: Signal Dom50
+       ( "SDA_WR" ::: ("EN" ::: Bool, "DAT" ::: Bit)
+       , "SCL_WR" ::: ("EN" ::: Bool, "DAT" ::: Bit)
+       )
+topEntity clk reset (sdaRead, sclRead) =
+  let circ = exposeClockResetEnable (run (SNat @I2CFreq)) clk reset enableGen sdaRead sclRead
   in bimap toI2CHighImpedance toI2CHighImpedance <$> circ
 
 toI2CHighImpedance :: Maybe Bit -> (Bool, Bit)

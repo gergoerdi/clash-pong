@@ -25,7 +25,7 @@ data SendBits n
   deriving (Show, Generic, NFDataX)
 deriving instance (KnownNat n, 1 <= n) => BitPack (SendBits n)
 
-data SendTransition = SDASet | Tick | Tock
+data SendTransition = SDASet | Tick
   deriving (Show, Enum, Bounded, Eq, Generic, BitPack, NFDataX)
 
 data Init = StartInit | SDALow | SCLLow

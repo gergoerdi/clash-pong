@@ -7,9 +7,6 @@ module Top(
 	//////////// KEY //////////
 	input 		     [1:0]		KEY,
 
-	//////////// LED //////////
-	output		     [7:0]		LED,
-
 	//////////// HDMI-TX //////////
 	inout 		          		HDMI_I2C_SCL,
 	inout 		          		HDMI_I2C_SDA,

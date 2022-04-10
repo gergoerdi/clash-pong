@@ -7,7 +7,8 @@ import qualified Clash.Shake.SymbiFlow as SymbiFlow
 import Development.Shake
 import Development.Shake.FilePath
 import System.Console.GetOpt
-import Data.Foldable (forM_)
+import Data.Traversable (for)
+import Data.Foldable (for_)
 
 outDir :: FilePath
 outDir = "_build"
@@ -25,19 +26,11 @@ main = shakeArgsWith shakeOptions{ shakeFiles = outDir } flags $ \flags targets 
           | useSymbiFlow = SymbiFlow.xilinx7
           | otherwise = Xilinx.vivado
 
-    let boards =
-            [ ("nexys-a7-50t", xilinx7 nexysA750T)
-            , ("papilio-pro", Xilinx.ise papilioPro)
-            , ("papilio-one", Xilinx.ise papilioOne)
-            , ("de0-nano", Intel.quartus de0Nano)
-            , ("arrow-deca", Intel.quartus arrowDeca)
-            ]
-
     phony "clean" $ do
         putNormal $ "Cleaning files in " <> outDir
         removeFilesAfter outDir [ "//*" ]
 
-    kit@ClashKit{..} <- clashRules (outDir </> "clash") Verilog
+    (clash, kit) <- clashRules (outDir </> "clash") Verilog
         [ "src" ]
         "Pong"
         [ "-Wno-partial-type-signatures"
@@ -46,7 +39,24 @@ main = shakeArgsWith shakeOptions{ shakeFiles = outDir } flags $ \flags targets 
         return ()
     phony "clashi" $ clash ["--interactive", "src/Pong.hs"]
 
-    forM_ boards $ \(name, synth) -> do
-        SynthKit{..} <- synth kit (outDir </> name) ("target" </> name) "Top"
+    let boards =
+            [ ("nexys-a7-50t", xilinx7 nexysA750T, [])
+            , ("papilio-pro", Xilinx.ise papilioPro, [])
+            , ("papilio-one", Xilinx.ise papilioOne, [])
+            , ("de0-nano", Intel.quartus de0Nano, [])
+            , ("arrow-deca", Intel.quartus arrowDeca, ["ArrowDecaHDMI"])
+            ]
+
+    for_ boards $ \(name, synth, extraModules) -> do
+        let targetDir = "target" </> name
+        extraKits <- fmap mconcat $ for extraModules $ \extraModule -> do
+            (_, extraKit) <- clashRules (outDir </> name </> "clash") Verilog
+              [ "src" ]
+              extraModule
+              [] $
+              return ()
+            return extraKit
+
+        SynthKit{..} <- synth (kit <> extraKits) (outDir </> name </> "synth") targetDir "Top"
         mapM_ (uncurry $ nestedPhony name) $
           ("bitfile", need [bitfile]):phonies

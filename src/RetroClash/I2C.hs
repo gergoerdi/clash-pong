@@ -9,11 +9,11 @@ import RetroClash.Clock
 import Control.Monad.State
 import Data.Maybe (isJust, isNothing)
 
-type Message = (Unsigned 7, Unsigned 8, Unsigned 8)
+type Message = (Unsigned 8, Unsigned 8, Unsigned 8)
 
 data MessageState
     = Init Init
-    | SendAddr (SendBits 7)
+    | SendAddr (SendBits 8)
     | SendSubaddr (SendBits 8)
     | SendDat (SendBits 8)
     | Teardown Teardown

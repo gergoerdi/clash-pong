@@ -47,8 +47,8 @@ run i2cRate sdaIn sclIn = i2cOut
 -- Data to be output over I2C
 type DatLength = 31
 
-initHDMI :: Vec DatLength (Unsigned 7, Unsigned 8, Unsigned 8)
-initHDMI = $(listToVecTH @(Unsigned 7, Unsigned 8, Unsigned 8)
+initHDMI :: Vec DatLength (Unsigned 8, Unsigned 8, Unsigned 8)
+initHDMI = $(listToVecTH @(Unsigned 8, Unsigned 8, Unsigned 8)
   [(0x72, 0x98, 0x03) -- Must be set to 0x03 for proper operation
   ,(0x72, 0x01, 0x00) -- Set 'N' value at 6144
   ,(0x72, 0x02, 0x18) -- Set 'N' value at 6144

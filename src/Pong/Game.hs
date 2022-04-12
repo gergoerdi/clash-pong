@@ -14,7 +14,6 @@ module Pong.Game
     , between
     ) where
 
-import Prelude
 import Clash.Prelude hiding (lift)
 import RetroClash.Utils
 

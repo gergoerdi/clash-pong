@@ -36,7 +36,7 @@ main = shakeArgsWith shakeOptions{ shakeFiles = outDir } flags $ \flags targets 
         putNormal $ "Cleaning files in " <> outDir
         removeFilesAfter outDir [ "//*" ]
 
-    kit@ClashKit{..} <- clashRules (outDir </> "clash") Verilog
+    (clash, kit) <- clashRules (outDir </> "clash") Verilog
         [ "src" ]
         "Pong"
         [ "-Wno-partial-type-signatures"

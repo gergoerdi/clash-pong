@@ -8,7 +8,6 @@ module Pong.Video
 
 import Pong.Game
 
-import Prelude
 import Clash.Prelude hiding (lift)
 import RetroClash.Utils
 import Data.Word

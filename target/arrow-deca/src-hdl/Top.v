@@ -49,27 +49,12 @@ module Top(
         );
 
 
-    // HDMI initialisation
-    wire  HDMI_I2C_SCL_RD;
-    wire  HDMI_I2C_SCL_WR_EN;
-    wire  HDMI_I2C_SCL_WR_DAT;
-    assign HDMI_I2C_SCL = HDMI_I2C_SCL_WR_EN ? HDMI_I2C_SCL_WR_DAT : 1'bz;
-
-    wire  HDMI_I2C_SDA_RD;
-    wire  HDMI_I2C_SDA_WR_EN;
-    wire  HDMI_I2C_SDA_WR_DAT;
-    assign HDMI_I2C_SDA = HDMI_I2C_SDA_WR_EN ? HDMI_I2C_SDA_WR_DAT : 1'bz;
-
     initHDMI u_initHDMI
         ( .CLK_50MHZ(MAX10_CLK2_50)
         // , .RESET(!HDMI_TX_INT)
         , .RESET(1'b0)
-        , .I2C_SCL_RD(HDMI_I2C_SCL_RD)
-        , .I2C_SCL_WR_EN(HDMI_I2C_SCL_WR_EN)
-        , .I2C_SCL_WR_DAT(HDMI_I2C_SCL_WR_DAT)
-        , .I2C_SDA_RD(HDMI_I2C_SDA_RD)
-        , .I2C_SDA_WR_EN(HDMI_I2C_SDA_WR_EN)
-        , .I2C_SDA_WR_DAT(HDMI_I2C_SDA_WR_DAT)
+        , .I2C_SCL(HDMI_I2C_SCL)
+        , .I2C_SDA(HDMI_I2C_SDA)
         );
 
 endmodule

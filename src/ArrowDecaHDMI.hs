@@ -13,34 +13,30 @@ createDomain vSystem{vName="Dom50", vPeriod = hzToPeriod 50_000_000}
 type I2CFreq = 20_000
 
 topEntity
-    :: "CLK_50MHZ"    ::: Clock Dom50
-    -> "RESET"        ::: Reset Dom50
+    :: "CLK_50MHZ" ::: Clock Dom50
+    -> "RESET"     ::: Reset Dom50
     -> "I2C" :::
-       ( "SDA_RD"    ::: Signal Dom50 Bit
-       , "SCL_RD"    ::: Signal Dom50 Bit
+       ( "SCL" ::: BiSignalIn 'PullUp Dom50 (BitSize Bit)
+       , "SDA" ::: BiSignalIn 'PullUp Dom50 (BitSize Bit)
        )
-    -> "I2C" ::: Signal Dom50
-       ( "SDA_WR" ::: ("EN" ::: Bool, "DAT" ::: Bit)
-       , "SCL_WR" ::: ("EN" ::: Bool, "DAT" ::: Bit)
+    -> "I2C" :::
+       ( "SCL" ::: BiSignalOut 'PullUp Dom50 (BitSize Bit)
+       , "SDA" ::: BiSignalOut 'PullUp Dom50 (BitSize Bit)
        )
-topEntity clk reset (sdaRead, sclRead) =
-  let circ = exposeClockResetEnable (run (SNat @I2CFreq)) clk reset enableGen sdaRead sclRead
-  in bimap toI2CHighImpedance toI2CHighImpedance <$> circ
-
-toI2CHighImpedance :: Maybe Bit -> (Bool, Bit)
-toI2CHighImpedance Nothing = (False, errorX "toI2CHighImpedance: Writing nothing")
-toI2CHighImpedance (Just 0) = (True, 0)
-toI2CHighImpedance (Just 1) = (False, errorX "toI2CHighImpedance: Sending HIGH is the same as not writing at all")
+topEntity clk reset = exposeClockResetEnable (run (SNat @I2CFreq)) clk reset enableGen
 
 run
     :: (HiddenClockResetEnable dom, 1 <= i2cRate, KnownNat (DomainPeriod dom), 1 <= DomainPeriod dom)
     => SNat i2cRate
-    -> Signal dom Bit
-    -> Signal dom Bit
-    -> Signal dom (Maybe Bit, Maybe Bit)
-run i2cRate sdaIn sclIn = i2cOut
+    -> ( "SCL_IN"  ::: BiSignalIn 'PullUp dom (BitSize Bit)
+       , "SDA_IN"  ::: BiSignalIn 'PullUp dom (BitSize Bit)
+       )
+    -> ( "SCL_OUT" ::: BiSignalOut 'PullUp dom (BitSize Bit)
+       , "SDA_OUT" ::: BiSignalOut 'PullUp dom (BitSize Bit)
+       )
+run i2cRate (sclIn, sdaIn) = (sclOut, sdaOut)
   where
-    (ready, i2cOut) = i2cMaster i2cRate msg sdaIn sclIn
+    (ready, sclOut, sdaOut) = i2cMaster i2cRate msg sclIn sdaIn
     msg = fmap (\(subAddr, x) -> (0x72, subAddr, x)) . (initHDMI !!.) <$> i
     i = regEn (Just (0 :: Index DatLength)) ready $ (succIdx =<<) <$> i
 

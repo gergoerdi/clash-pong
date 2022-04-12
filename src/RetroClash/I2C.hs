@@ -44,8 +44,8 @@ nextBit (SendBit transition i) = Just $ case succIdx transition of
 nextBit (SendAck transition) = SendAck <$> succIdx transition
 
 shiftOut :: (KnownNat n) => Unsigned n -> SendBits n -> (Maybe Bit, Maybe Bit)
-shiftOut x (SendBit transition i) = (Just $ x ! i, Just $ boolToBit $ transition == Tick)
-shiftOut _ (SendAck transition) = (Nothing, Just $ boolToBit $ transition == Tick)
+shiftOut x (SendBit transition i) = (Just $ boolToBit $ transition == Tick, Just $ x ! i)
+shiftOut _ (SendAck transition) = (Just $ boolToBit $ transition == Tick, Nothing)
 
 -- We only drive clk (clock stretching not implemented), and we never query
 -- peripherals over I2C, so we never actually use sdaIn and sclIn
@@ -66,7 +66,7 @@ i2cOutput (addr, subaddr, dat) = \case
     Nothing -> (Just 1, Just 1)
 
     Just (Init StartInit)         -> (Just 1, Just 1)
-    Just (Init SDALow)            -> (Just 0, Just 1)
+    Just (Init SDALow)            -> (Just 1, Just 0)
     Just (Init SCLLow)            -> (Just 0, Just 0)
 
     Just (SendAddr b)             -> shiftOut addr b
@@ -74,23 +74,34 @@ i2cOutput (addr, subaddr, dat) = \case
     Just (SendDat b)              -> shiftOut dat b
 
     Just (Teardown StartTeardown) -> (Just 0, Just 0)
-    Just (Teardown SCLHigh)       -> (Just 0, Just 1)
+    Just (Teardown SCLHigh)       -> (Just 1, Just 0)
     Just (Teardown SDAHigh)       -> (Just 1, Just 1)
 
 i2cMaster
     :: (HiddenClockResetEnable dom, 1 <= i2cRate, KnownNat (DomainPeriod dom), 1 <= DomainPeriod dom)
     => SNat i2cRate
-    -> Signal dom (Maybe Message)
-    -> Signal dom Bit
-    -> Signal dom Bit
-    -> (Signal dom Bool, Signal dom (Maybe Bit, Maybe Bit))
-i2cMaster i2cRate@SNat msg sdaIn sclIn = mealyStateB step Nothing (i2cClock, msg, sdaIn, sclIn)
+    -> "DATA"   ::: Signal dom (Maybe Message)
+    -> "SCL_IN" ::: BiSignalIn 'PullUp dom (BitSize Bit)
+    -> "SDA_IN" ::: BiSignalIn 'PullUp dom (BitSize Bit)
+    -> ( "READY"   ::: Signal dom Bool
+       , "SCL_OUT" ::: BiSignalOut 'PullUp dom (BitSize Bit)
+       , "SDA_OUT" ::: BiSignalOut 'PullUp dom (BitSize Bit)
+       )
+i2cMaster i2cRate@SNat msg sclIn sdaIn = (ready, sclOut, sdaOut)
   where
     i2cClock = riseRate i2cRate
+    sclIn' = readFromBiSignal sclIn
+    sdaIn' = readFromBiSignal sdaIn
 
-    step :: (Bool, Maybe Message, Bit, Bit) -> State (Maybe MessageState) (Bool, (Maybe Bit, Maybe Bit))
-    step (tick, msg, sdaIn, sclIn) = do
+    (ready, sclOut', sdaOut') = mealyStateB step Nothing (i2cClock, msg, sclIn', sdaIn')
+    sclOut = writeToBiSignal sclIn sclOut'
+    sdaOut = writeToBiSignal sdaIn sdaOut'
+
+    step :: (Bool, Maybe Message, Bit, Bit) -> State (Maybe MessageState) (Bool, Maybe Bit, Maybe Bit)
+    step (tick, msg, sclIn, sdaIn) = do
         s <- get
         when tick $ modify $ i2cNext (isJust msg) sdaIn sclIn
         s' <- get
-        return (tick && isNothing s', i2cOutput (fromJustX msg) s)
+        let ready = tick && isNothing s'
+            (sclOut, sdaOut) = i2cOutput (fromJustX msg) s
+        return (ready, sclOut, sdaOut)

@@ -21,7 +21,7 @@ dependencies:
 
   - retroclash-lib
   
-  - clash-shake ^>= 0.2.1
+  - clash-shake ^>= 0.2.2
 
   - lens
   - mtl

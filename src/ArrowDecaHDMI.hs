@@ -15,10 +15,8 @@ type I2CFreq = 20_000
 topEntity
     :: "CLK_50MHZ" ::: Clock Dom50
     -> "RESET"     ::: Reset Dom50
-    -> "I2C" :::
-       ( "SCL" ::: BiSignalIn 'PullUp Dom50 (BitSize Bit)
-       , "SDA" ::: BiSignalIn 'PullUp Dom50 (BitSize Bit)
-       )
+    -> "I2C_SCL" ::: BiSignalIn 'PullUp Dom50 (BitSize Bit)
+    -> "I2C_SDA" ::: BiSignalIn 'PullUp Dom50 (BitSize Bit)
     -> "I2C" :::
        ( "SCL" ::: BiSignalOut 'PullUp Dom50 (BitSize Bit)
        , "SDA" ::: BiSignalOut 'PullUp Dom50 (BitSize Bit)
@@ -28,13 +26,12 @@ topEntity clk reset = exposeClockResetEnable (run (SNat @I2CFreq)) clk reset ena
 run
     :: (HiddenClockResetEnable dom, 1 <= i2cRate, KnownNat (DomainPeriod dom), 1 <= DomainPeriod dom)
     => SNat i2cRate
-    -> ( "SCL_IN"  ::: BiSignalIn 'PullUp dom (BitSize Bit)
-       , "SDA_IN"  ::: BiSignalIn 'PullUp dom (BitSize Bit)
-       )
+    -> "SCL_IN"  ::: BiSignalIn 'PullUp dom (BitSize Bit)
+    -> "SDA_IN"  ::: BiSignalIn 'PullUp dom (BitSize Bit)
     -> ( "SCL_OUT" ::: BiSignalOut 'PullUp dom (BitSize Bit)
        , "SDA_OUT" ::: BiSignalOut 'PullUp dom (BitSize Bit)
        )
-run i2cRate (sclIn, sdaIn) = (sclOut, sdaOut)
+run i2cRate sclIn sdaIn = (sclOut, sdaOut)
   where
     (ready, sclOut, sdaOut) = i2cMaster i2cRate msg sclIn sdaIn
     msg = fmap (\(subAddr, x) -> (0x72, subAddr, x)) . (initHDMI !!.) <$> i

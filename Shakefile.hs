@@ -44,14 +44,14 @@ main = shakeArgsWith shakeOptions{ shakeFiles = outDir } flags $ \flags targets 
             , ("papilio-pro", Xilinx.ise papilioPro, [])
             , ("papilio-one", Xilinx.ise papilioOne, [])
             , ("de0-nano", Intel.quartus de0Nano, [])
-            , ("arrow-deca", Intel.quartus arrowDeca, ["ArrowDecaHDMI"])
+            , ("arrow-deca", Intel.quartus arrowDeca, ["Hardware.ArrowDeca.HDMI"])
             ]
 
     for_ boards $ \(name, synth, extraModules) -> do
         let targetDir = "target" </> name
         extraKits <- fmap mconcat $ for extraModules $ \extraModule -> do
             (_, extraKit) <- clashRules (outDir </> name </> "clash") Verilog
-              [ "src" ]
+              [ "src", targetDir </> "src" ]
               extraModule
               [] $
               return ()

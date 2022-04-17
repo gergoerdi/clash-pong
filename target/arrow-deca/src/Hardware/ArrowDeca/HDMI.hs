@@ -1,6 +1,6 @@
 {-# LANGUAGE TypeApplications, FlexibleContexts #-}
 {-# LANGUAGE NumericUnderscores #-}
-module ArrowDecaHDMI (topEntity) where
+module Hardware.ArrowDeca.HDMI (topEntity) where
 
 import Clash.Prelude
 import Clash.Annotations.TH
@@ -75,4 +75,4 @@ initHDMI = $(listToVecTH @(Unsigned 8, Unsigned 8)
   ,(0xfa, 0x7d) -- Nbr of times to look for good phase
   ])
 
-makeTopEntityWithName 'topEntity "initHDMI"
+makeTopEntityWithName 'topEntity "InitHDMI"

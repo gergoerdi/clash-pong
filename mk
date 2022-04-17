@@ -1,1 +1,1 @@
-stack runhaskell --package clash-shake -- Shakefile.hs $@
+stack build && stack runhaskell --package clash-shake -- Shakefile.hs $@

@@ -49,7 +49,7 @@ module Top(
         );
 
 
-    initHDMI u_initHDMI
+    InitHDMI u_InitHDMI
         ( .CLK_50MHZ(MAX10_CLK2_50)
         // , .RESET(!HDMI_TX_INT)
         , .RESET(1'b0)

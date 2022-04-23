@@ -41,6 +41,7 @@ of `VIVADO_ROOT`:
 
 * Intel Quartus toolchain
   * DE0-Nano (Cyclone IV) with Fen Logic VGA666 adapter
+  * Arrow DECA (MAX 10)
 
 * SymbiFlow open source toolchain (experimental, pass `--symbiflow` to `mk` to use it)
   * Nexys A7-50T (Artix-7)

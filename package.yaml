@@ -11,14 +11,19 @@ custom-setup:
     - base
     - Cabal
     - clashilator
-    
+
 dependencies:
   - base
   - clash-prelude
   - clash-lib
   - clash-ghc
-  - retroclash-lib
-  
+
+  - ghc-typelits-natnormalise
+  - ghc-typelits-extra
+  - ghc-typelits-knownnat
+
+  - retroclash-lib ^>= 0.1.2
+
   - clash-shake ^>= 0.3.0
 
   - lens
@@ -41,7 +46,6 @@ default-extensions:
   - MagicHash
   - MonoLocalBinds
   - NoImplicitPrelude
-  - NoMonomorphismRestriction
   - NoStarIsType
   - NoStrictData
   - NoStrict
@@ -51,8 +55,13 @@ default-extensions:
   - TemplateHaskell
   - TypeApplications
   - TypeFamilies
-  - TypeInType
   - TypeOperators
+
+ghc-options:
+  -fexpose-all-unfoldings -fno-worker-wrapper
+  -fplugin GHC.TypeLits.KnownNat.Solver
+  -fplugin GHC.TypeLits.Normalise
+  -fplugin GHC.TypeLits.Extra.Solver
 
 source-dirs:
   - src

@@ -26,12 +26,12 @@ packages:
   original:
     hackage: clash-ghc-1.6.1
 - completed:
-    hackage: retroclash-lib-0.1.1@sha256:d9db2fcfafe09e6092dbb8d358483732a6bba72fb5609f4681f66bd19b5e4ff9,3119
+    hackage: retroclash-lib-0.1.2@sha256:3acfed2ade9f655a6fc512bde4636599021791e34f2a329fd08003bac46a8abe,3140
     pantry-tree:
-      size: 1212
-      sha256: 886c085abf68b87ce9833835283aaf8293df99ed01d1e5675992a81423305097
+      size: 1274
+      sha256: def2b0413226188dc032236d7d17bb8576d8c2a0d7ac24c40b83cffa56c621d4
   original:
-    hackage: retroclash-lib-0.1.1
+    hackage: retroclash-lib-0.1.2
 - completed:
     hackage: retroclash-sim-0.1.1@sha256:079aeec4edb7298506348480df543cf59a1c1d7249aa1d0c7fb01cab0f609ff8,2388
     pantry-tree:

@@ -23,8 +23,8 @@ main = shakeArgsWith shakeOptions{ shakeFiles = outDir } flags $ \flags targets 
 
     let useSymbiFlow = UseSymbiFlow `elem` flags
         xilinx7
-          | useSymbiFlow = SymbiFlow.xilinx7
-          | otherwise = Xilinx.vivado
+          | useSymbiFlow = \dev kit dir -> SymbiFlow.xilinx7 dev kit (dir <.> "symbiflow")
+          | otherwise = \dev kit dir -> Xilinx.vivado dev kit (dir <.> "vivado")
 
     phony "clean" $ do
         putNormal $ "Cleaning files in " <> outDir

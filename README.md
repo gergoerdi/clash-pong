@@ -33,22 +33,26 @@ of `VIVADO_ROOT`:
 ## Supported target boards
 
 * Xilinx ISE toolchain
-  * Papilio One (Spartan-3) with the Arcade MegaBoard
-  * Papilio Pro (Spartan-6) with the Arcade MegaBoard
+  * `papilio-one`: Papilio One (Spartan-3) with the Arcade MegaBoard
+  * `papilio-pro`: Papilio Pro (Spartan-6) with the Arcade MegaBoard
 
 * Xilinx Vivado toolchain
-  * Nexys A7-50T (Artix-7)
+  * `nexys-a7-50t`: Nexys A7-50T (Artix-7)
 
 * Intel Quartus toolchain
-  * DE0-Nano (Cyclone IV) with Fen Logic VGA666 adapter
-  * Arrow DECA (MAX 10)
+  * `de0-nano`: DE0-Nano (Cyclone IV) with Fen Logic VGA666 adapter
+  * `arrow-deca`: Arrow DECA (MAX 10)
 
-* SymbiFlow open source toolchain (experimental, pass `--symbiflow` to `mk` to use it)
-  * Nexys A7-50T (Artix-7)
+* F4PGA (formerly SymbiFlow) open source toolchain
+  * `nexys-a7-50t.f4pga`: Nexys A7-50T (Artix-7)
 
-Adding support for other Intel or Xilinx based FPGA dev boards is very
-straightforward with the included Shake rules, as long as they have
-VGA output and at least two input pushbuttons.
+Bitfile can be built with e.g. `./mk papilio-pro/bitfile`. For some
+targets, a rule to upload the resulting bitfile is also included,
+e.g. `./mk arrow-deca/upload`.
+
+Adding support for other Intel, Xilinx, or F4PGA based FPGA dev boards
+is very straightforward with the included Shake rules, as long as they
+have VGA output and at least two input pushbuttons.
 
 Targeting other FPGA toolchains will require adding support in the
 Shake rules. Alternatively, you can always just run Clash, and import

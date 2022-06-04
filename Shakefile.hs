@@ -1,32 +1,22 @@
-{-# LANGUAGE RecordWildCards #-}
+{-# LANGUAGE RecordWildCards, BlockArguments #-}
 import Clash.Shake
 import Clash.Shake.Xilinx as Xilinx
 import Clash.Shake.Intel as Intel
-import qualified Clash.Shake.SymbiFlow as SymbiFlow
+import qualified Clash.Shake.SymbiFlow as F4PGA
 
 import Development.Shake
 import Development.Shake.FilePath
-import System.Console.GetOpt
 import Data.Traversable (for)
 import Data.Foldable (for_)
 
 outDir :: FilePath
 outDir = "_build"
 
-data Flags = UseSymbiFlow deriving Eq
-
-flags = [Option "" ["symbiflow"] (NoArg $ Right UseSymbiFlow) "Use SymbiFlow instead of vendor toolchain"]
-
 main :: IO ()
-main = shakeArgsWith shakeOptions{ shakeFiles = outDir } flags $ \flags targets -> pure $ Just $ withTargets targets $ do
+main = shakeArgs shakeOptions{ shakeFiles = outDir } do
     useConfig "build.mk"
 
-    let useSymbiFlow = UseSymbiFlow `elem` flags
-        xilinx7
-          | useSymbiFlow = \dev kit dir -> SymbiFlow.xilinx7 dev kit (dir <.> "symbiflow")
-          | otherwise = \dev kit dir -> Xilinx.vivado dev kit (dir <.> "vivado")
-
-    phony "clean" $ do
+    phony "clean" do
         putNormal $ "Cleaning files in " <> outDir
         removeFilesAfter outDir [ "//*" ]
 
@@ -40,16 +30,17 @@ main = shakeArgsWith shakeOptions{ shakeFiles = outDir } flags $ \flags targets 
     phony "clashi" $ clash ["--interactive", "src/Pong.hs"]
 
     let boards =
-            [ ("nexys-a7-50t", xilinx7 nexysA750T, [])
-            , ("papilio-pro", Xilinx.ise papilioPro, [])
-            , ("papilio-one", Xilinx.ise papilioOne, [])
-            , ("de0-nano", Intel.quartus de0Nano, [])
-            , ("arrow-deca", Intel.quartus arrowDeca, ["Hardware.ArrowDeca.HDMI"])
+            [ ("nexys-a7-50t", "nexys-a7-50t", Xilinx.vivado nexysA750T, [])
+            , ("nexys-a7-50t.f4pga", "nexys-a7-50t", F4PGA.xilinx7 nexysA750T, [])
+            , ("papilio-pro", "papilio-pro", Xilinx.ise papilioPro, [])
+            , ("papilio-one", "papilio-one", Xilinx.ise papilioOne, [])
+            , ("de0-nano", "de0-nano", Intel.quartus de0Nano, [])
+            , ("arrow-deca", "arrow-deca", Intel.quartus arrowDeca, ["Hardware.ArrowDeca.HDMI"])
             ]
 
-    for_ boards $ \(name, synth, extraModules) -> do
-        let targetDir = "target" </> name
-        extraKits <- fmap mconcat $ for extraModules $ \extraModule -> do
+    for_ boards \(name, targetName, synth, extraModules) -> do
+        let targetDir = "target" </> targetName
+        extraKits <- fmap mconcat $ for extraModules \extraModule -> do
             (_, extraKit) <- clashRules (outDir </> name </> "clash") Verilog
               [ "src", targetDir </> "src" ]
               extraModule
@@ -59,4 +50,4 @@ main = shakeArgsWith shakeOptions{ shakeFiles = outDir } flags $ \flags targets 
 
         SynthKit{..} <- synth (kit <> extraKits) (outDir </> name </> "synth") targetDir "Top"
         mapM_ (uncurry $ nestedPhony name) $
-          ("bitfile", need [bitfile]):phonies
+            ("bitfile", need [bitfile]):phonies

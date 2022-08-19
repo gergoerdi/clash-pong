@@ -32,6 +32,7 @@ main = shakeArgs shakeOptions{ shakeFiles = outDir } do
     let boards =
             [ ("nexys-a7-50t", "nexys-a7-50t", Xilinx.vivado nexysA750T, [])
             , ("nexys-a7-50t.f4pga", "nexys-a7-50t", F4PGA.xilinx7 nexysA750T, [])
+            , ("basys-3", "basys-3", Xilinx.vivado basys3, [])
             , ("papilio-pro", "papilio-pro", Xilinx.ise papilioPro, [])
             , ("papilio-one", "papilio-one", Xilinx.ise papilioOne, [])
             , ("de0-nano", "de0-nano", Intel.quartus de0Nano, [])

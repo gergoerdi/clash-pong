@@ -1,12 +1,10 @@
-resolver: clash-1.6.1.yaml
+resolver: clash-1.6.4.yaml
 
 packages:
-    - clash-shake
     - '.'
 
 extra-deps:
   - retroclash-lib-0.1.2
   - retroclash-sim-0.1.1
-  - clashilator-0.1.2
-
-  - monoidal-containers-0.6.0.1
+  - clashilator-0.1.2.1
+  - clash-shake-0.3.1.2

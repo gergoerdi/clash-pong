@@ -5,26 +5,26 @@
 
 packages:
 - completed:
-    hackage: clash-prelude-1.6.1@sha256:52c800718c94abdeeedf4f838ee8103ac39d5d4de9a117bc48a5c3bab1e60d91,16717
+    hackage: clash-prelude-1.6.4@sha256:b8c8b679236828d59e0f0c01658437a44ffa4fad6a72743459084ed4942f9899,16769
     pantry-tree:
-      size: 13161
-      sha256: 109767ecf2b9255a1d0dafeb823a808f4e388d85d3593fa2c3f6c7ea0ff089c6
+      size: 13292
+      sha256: bac843b8cd3d623995deaf73092b6b19dc6198bd41c730a5634b88cd1d03d924
   original:
-    hackage: clash-prelude-1.6.1
+    hackage: clash-prelude-1.6.4
 - completed:
-    hackage: clash-lib-1.6.1@sha256:60fce87e787d2e98a3fe0a289b19db4361f4abfe0c359e20b801fd6d15558277,13688
+    hackage: clash-lib-1.6.4@sha256:336e57d424852f2ad9285b6fa820e634f32d39d52755d3245d5f4ac04ea37f85,13688
     pantry-tree:
       size: 22460
-      sha256: d937afab7cfee82ea84186878e2ffd3dc0d20dc8304c6f1d89f4e912ebe3849b
+      sha256: 750ffc9d2f5ed3690f6a2a7da46090970594dbbcf8a6b55d785e8f809b4dfbf1
   original:
-    hackage: clash-lib-1.6.1
+    hackage: clash-lib-1.6.4
 - completed:
-    hackage: clash-ghc-1.6.1@sha256:345d9981b5ae891ae0e8a9ba482c6437d2b754c431d028ffb3523830f0500a4e,8709
+    hackage: clash-ghc-1.6.4@sha256:43e4c9c949bf9623633f08bb09bb4495578b517be4e99140d9ea22dd2a9cd13b,9042
     pantry-tree:
       size: 3634
-      sha256: 9babf0065526b659afbca120e8bdb3960ba66de550822292b8ac64f852e7bfde
+      sha256: 9484d37cd6c8cb0217a02cf020b6398dbe1a68fa332472b40cfb511ce54a743a
   original:
-    hackage: clash-ghc-1.6.1
+    hackage: clash-ghc-1.6.4
 - completed:
     hackage: retroclash-lib-0.1.2@sha256:3acfed2ade9f655a6fc512bde4636599021791e34f2a329fd08003bac46a8abe,3140
     pantry-tree:
@@ -40,22 +40,22 @@ packages:
   original:
     hackage: retroclash-sim-0.1.1
 - completed:
-    hackage: clashilator-0.1.2@sha256:696ce6e2d2d7c9ea94f0dd418dc65774437df46ab7a07f83421414de885e71b3,2156
+    hackage: clashilator-0.1.2.1@sha256:7d1d45ce8c396f85b254b5113df59ff332d0a3c9a60b79e257777c82b261b971,2158
     pantry-tree:
       size: 749
-      sha256: 1054ecba2197e9ade8a40160d0cc36e4022075619d6dea97279ea874d568d0f3
+      sha256: a668dd61fd31e052a1634535abf356fe251da35f55dd345694b36f8b22ff525b
   original:
-    hackage: clashilator-0.1.2
+    hackage: clashilator-0.1.2.1
 - completed:
-    hackage: monoidal-containers-0.6.0.1@sha256:f56ea8fe91ff93da140e38b8dab4b94437b901818c13ba72fc7fc802290323ee,2583
+    hackage: clash-shake-0.3.1.2@sha256:c063a768d938906bc43c3fa77fadb4240af1ce6f7ca3d92a178c6d9babf95fe8,1784
     pantry-tree:
-      size: 569
-      sha256: 3a43dbbb1839521aae37a2baa3fb3ad0cc61a0a8fc4e3aec1f7dda15b92a0279
+      size: 788
+      sha256: 220db7fbbb53bc02a7a409a9c8e71aa895f90c180a7787c2b459accc99ad6c0a
   original:
-    hackage: monoidal-containers-0.6.0.1
+    hackage: clash-shake-0.3.1.2
 snapshots:
 - completed:
-    size: 587821
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/18/24.yaml
-    sha256: 06d844ba51e49907bd29cb58b4a5f86ee7587a4cd7e6cf395eeec16cba619ce8
-  original: lts-18.24
+    size: 619391
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/19/21.yaml
+    sha256: fe8926aaa3f05bb1a0a82551d2e221f267726fe73ac369d74f7b909d45b92fba
+  original: lts-19.21

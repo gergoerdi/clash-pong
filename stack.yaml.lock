@@ -5,26 +5,26 @@
 
 packages:
 - completed:
-    hackage: clash-prelude-1.6.6@sha256:b1955d63e15ab9bc20dc9dc48b9b71976fb3ed84007fb2b2b2a42bcda2201475,17047
+    hackage: clash-prelude-1.8.1@sha256:c0db58c2de0eae8d4921585062d28334b30a723ee7509e2bffef104b5359b44b,18134
     pantry-tree:
-      sha256: 82f8cd1161a14112ea03757c41df4f5373cb5455cefa7ed4f8047fe7ec3eb0ea
-      size: 13360
+      sha256: ea90a0581033a71dd2ca5fec1403a6abb64206e645b3a22d2d68e150e3360bf6
+      size: 13511
   original:
-    hackage: clash-prelude-1.6.6
+    hackage: clash-prelude-1.8.1
 - completed:
-    hackage: clash-lib-1.6.6@sha256:681a08578572c2bc19ef1eb60e38e12187ec3164ff492b23d07575b16daa6a76,13800
+    hackage: clash-lib-1.8.1@sha256:311f9a7ae29b23de94a7ba3e9aaccac94755d817ff6e7927a2fff5a8bb3c3e0a,16148
     pantry-tree:
-      sha256: 7b63274ad4100e158dd297a66fe9140f6a9fc81f84a04d43f130c758eed02168
-      size: 22461
+      sha256: 062c056e52db0da3261867165a88b2e9783688dfc82c9c1521837b92cd867421
+      size: 23320
   original:
-    hackage: clash-lib-1.6.6
+    hackage: clash-lib-1.8.1
 - completed:
-    hackage: clash-ghc-1.6.6@sha256:f8bfc297a81e490781214a49e5743b2c778bcfcf8c57843b5f447b00e6498320,9385
+    hackage: clash-ghc-1.8.1@sha256:e0c9dc8be0d1fda31ee8c3007d7dce3fb3467e5eabe586fb570bdd2fafb3f3a6,10022
     pantry-tree:
-      sha256: 87d94a30019a2a8a63524ff22e4fc7311aedca9324710835f04c2764f76a93e4
-      size: 3634
+      sha256: 275ec37ff07f9762cc45e6bfa9be9940e74c6b994b87e1eafdac786e40af0da0
+      size: 5656
   original:
-    hackage: clash-ghc-1.6.6
+    hackage: clash-ghc-1.8.1
 - completed:
     hackage: attoparsec-aeson-2.1.0.0@sha256:fa83aba43bfa58490de8f274d19b9d58b6403a207b12cac5f93922102b084c52,1154
     pantry-tree:
@@ -33,26 +33,47 @@ packages:
   original:
     hackage: attoparsec-aeson-2.1.0.0
 - completed:
-    hackage: retroclash-lib-0.1.2@sha256:3acfed2ade9f655a6fc512bde4636599021791e34f2a329fd08003bac46a8abe,3140
+    hackage: infinite-list-0.1.1@sha256:84165e76503812075c34210f862b0e560bf44cb2e52c6aa0811a41ef0c4b68bd,2809
     pantry-tree:
-      sha256: def2b0413226188dc032236d7d17bb8576d8c2a0d7ac24c40b83cffa56c621d4
+      sha256: 0757257ba6263329f0dad86f2d7f4004e18ec678bd4beccdbab2aee1855bf6d9
+      size: 594
+  original:
+    hackage: infinite-list-0.1.1
+- completed:
+    hackage: prettyprinter-interp-0.2.0.0@sha256:69c339a95b265dab9b3478ca19ec96952b6b472bd0ff6e2127112a9562362c1d,2086
+    pantry-tree:
+      sha256: 72ec39fe4a40e437e7c0d3efba1f97c4e4e860a7b5503f31d185cef389c9c6e1
+      size: 300
+  original:
+    hackage: prettyprinter-interp-0.2.0.0
+- completed:
+    hackage: retroclash-lib-0.1.2.2@sha256:4ddf6efb9c8d8da98333ecebdd9d0aee0d99c40767721c16879e80f377175438,3303
+    pantry-tree:
+      sha256: 18599fffb446ddf4703149874e67782cd055a35645ebefdd5b2beb8f4c8d988c
       size: 1274
   original:
-    hackage: retroclash-lib-0.1.2
+    hackage: retroclash-lib-0.1.2.2
 - completed:
-    hackage: retroclash-sim-0.1.1@sha256:079aeec4edb7298506348480df543cf59a1c1d7249aa1d0c7fb01cab0f609ff8,2388
+    hackage: retroclash-sim-0.1.1@sha256:cd0079dc90fdf50d69bad2ac415745222838280b1615a7149ffe8c38e4b94183,2433
     pantry-tree:
-      sha256: 05191dcdf3ac3a5bddeb52d6b5e8ef96781ed0de36710769f5e71ae88ed86614
+      sha256: 39e7b05e3de9cc7a7ad05e15092a8f7bfb6cb371de7cbf7f80542a8796673466
       size: 377
   original:
     hackage: retroclash-sim-0.1.1
 - completed:
-    hackage: clash-shake-0.3.1.2@sha256:c063a768d938906bc43c3fa77fadb4240af1ce6f7ca3d92a178c6d9babf95fe8,1784
+    hackage: clashilator-0.1.3@sha256:c6147f9ec5f108ac1698b39c4adf322045590ba60542e9086d8d0170a0829c95,2046
     pantry-tree:
-      sha256: 220db7fbbb53bc02a7a409a9c8e71aa895f90c180a7787c2b459accc99ad6c0a
-      size: 788
+      sha256: e65c05786e6089559f62617d8434fc9db24ad6d2e1638cf7c41b88a4d2849b31
+      size: 749
   original:
-    hackage: clash-shake-0.3.1.2
+    hackage: clashilator-0.1.3
+- completed:
+    hackage: clash-shake-0.3.2@sha256:f4b1951b8cba3b9a3febf095acc5e9162a03625dc524ad42680ee686bd571fbf,1822
+    pantry-tree:
+      sha256: 2b941c98520a9dff98c23dd76e9259cacfecd3d1b4bcff1014fffc0d70b82098
+      size: 852
+  original:
+    hackage: clash-shake-0.3.2
 snapshots:
 - completed:
     sha256: 6d1532d40621957a25bad5195bfca7938e8a06d923c91bc52aa0f3c41181f2d4

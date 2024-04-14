@@ -1,8 +1,8 @@
 module Top(
-    input        CLOCK_50,
-    input  [1:0] KEY,
-    output [33:0] GPIO_1
-);
+           input wire         CLOCK_50,
+           input wire [1:0]   KEY,
+           output wire [33:0] GPIO_1
+           );
 
     wire            CLK_25MHZ;
     wire            CLK_LOCKED;

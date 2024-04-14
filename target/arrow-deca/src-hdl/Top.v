@@ -1,25 +1,25 @@
 module Top(
 
-    // CLOCK
-    input MAX10_CLK1_50,
-    input MAX10_CLK2_50,
+           // CLOCK
+           input wire         MAX10_CLK1_50,
+           input wire         MAX10_CLK2_50,
 
-	//////////// KEY //////////
-	input 		     [1:0]		KEY,
+	   //////////// KEY //////////
+           input wire [1:0]   KEY,
 
-	//////////// HDMI-TX //////////
-	inout 		          		HDMI_I2C_SCL,
-	inout 		          		HDMI_I2C_SDA,
-	inout 		     [3:0]		HDMI_I2S,
-	inout 		          		HDMI_LRCLK,
-	inout 		          		HDMI_MCLK,
-	inout 		          		HDMI_SCLK,
-	output		          		HDMI_TX_CLK,
-	output		    [23:0]		HDMI_TX_D,
-	output		          		HDMI_TX_DE,
-	output		          		HDMI_TX_HS,
-	input 		          		HDMI_TX_INT,
-	output		          		HDMI_TX_VS
+	   //////////// HDMI-TX //////////
+           inout wire         HDMI_I2C_SCL,
+           inout wire         HDMI_I2C_SDA,
+           inout wire [3:0]   HDMI_I2S,
+           inout wire         HDMI_LRCLK,
+           inout wire         HDMI_MCLK,
+           inout wire         HDMI_SCLK,
+           output wire        HDMI_TX_CLK,
+           output wire [23:0] HDMI_TX_D,
+           output wire        HDMI_TX_DE,
+           output wire        HDMI_TX_HS,
+           input wire         HDMI_TX_INT,
+           output wire        HDMI_TX_VS
 );
     // PLL for 25MHz
     wire CLK_25MHZ;

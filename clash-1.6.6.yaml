@@ -1,0 +1,13 @@
+name: clash-1.6.6
+resolver: lts-19.33
+
+packages:
+  - clash-prelude-1.6.6
+  - clash-lib-1.6.6
+  - clash-ghc-1.6.6
+  
+  - attoparsec-aeson-2.1.0.0
+
+flags:
+    clash-prelude:
+      multiple-hidden: false

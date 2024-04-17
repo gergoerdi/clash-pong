@@ -10,6 +10,7 @@ import RetroClash.Sim.IO
 import RetroClash.Sim.SDL
 import RetroClash.Sim.VGA
 import RetroClash.Sim.VGASDL
+import Control.Monad
 import Control.Monad.State
 import Control.Monad.Loops
 

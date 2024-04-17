@@ -6,6 +6,7 @@ import Prelude
 import Pong.Game
 import Pong.Video
 import RetroClash.Sim.SDL
+import Control.Monad
 import Control.Monad.State
 
 main :: IO ()
